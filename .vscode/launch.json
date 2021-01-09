@@ -1,0 +1,9 @@
+{
+    "configurations": [
+        {
+            "name": "tribeseed",
+            "request": "launch",
+            "type": "dart"
+        }
+    ]
+}
