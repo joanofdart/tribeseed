@@ -55,75 +55,76 @@ class AuthWidget extends StatelessWidget with TextContants {
     );
   }
 
-  Widget _buildForms(BuildContext context) {
-    return Consumer(builder: (context, watch, child) {
-      final isSignInForm = watch(authFormSwitchProvider).state;
-      final formKey = watch(authFormKeyProvider);
-      final formTitle = isSignInForm
-          ? TextContants.authSignInTitle
-          : TextContants.authSignUpTitle;
+  Widget _buildForm(BuildContext context) {
+    return Consumer(
+      builder: (context, watch, child) {
+        final isSignInForm = watch(authFormSwitchProvider).state;
+        final formKey = watch(authFormKeyProvider);
+        final formTitle = isSignInForm
+            ? TextContants.authSignInTitle
+            : TextContants.authSignUpTitle;
 
-      return Form(
-        key: formKey,
-        child: Column(
-          children: [
-            Text(formTitle),
-            _buildInput(
-              labelText: TextContants.authFullnameLabel,
-              helperText: TextContants.authFullnameDescription,
-              showInput: !isSignInForm,
-            ),
-            _buildInput(
-              labelText: TextContants.authEmailLabel,
-              helperText: TextContants.authEmailDescription,
-              validator: (value) => FormValidation.validate(
-                fieldValidators: [
-                  FieldValidators.required(),
-                  FieldValidators.min(100),
-                ],
-                fieldValue: value,
+        return Form(
+          key: formKey,
+          child: Column(
+            children: [
+              Text(formTitle),
+              _buildInput(
+                labelText: TextContants.authFullnameLabel,
+                helperText: TextContants.authFullnameDescription,
+                showInput: !isSignInForm,
               ),
-            ),
-            _buildInput(
-              labelText: TextContants.authPasswordLabel,
-              helperText: TextContants.authPasswordDescription,
-              isPassword: true,
-            ),
-            RaisedButton(
-              onPressed: () {
-                print(formKey.currentState.validate());
-                // context.read(authStateChangesProviderMock).state = true;
-              },
-              child: Text(formTitle),
-            ),
-            _switchForms(
-              context: context,
-              isSignInForm: isSignInForm,
-              title: formTitle,
-            ),
-          ],
-        ),
-      );
-    });
+              _buildInput(
+                labelText: TextContants.authEmailLabel,
+                helperText: TextContants.authEmailDescription,
+                validator: (value) => FormValidation.validate(
+                  fieldValidators: [
+                    FieldValidators.required(),
+                    FieldValidators.min(100),
+                  ],
+                  fieldValue: value,
+                ),
+              ),
+              _buildInput(
+                labelText: TextContants.authPasswordLabel,
+                helperText: TextContants.authPasswordDescription,
+                isPassword: true,
+              ),
+              RaisedButton(
+                onPressed: () {
+                  print(formKey.currentState.validate());
+                  // context.read(authStateChangesProviderMock).state = true;
+                },
+                child: Text(formTitle),
+              ),
+              _switchForms(
+                context: context,
+                isSignInForm: isSignInForm,
+                title: formTitle,
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   Widget _buildAuthWidget(BuildContext context) {
     return BaseWidget(
-      child: Center(
-        child: Container(
-          margin: const EdgeInsets.all(10),
+      child: Container(
+        alignment: Alignment.center,
+        margin: const EdgeInsets.all(10),
 
-          /// TODO: Styling
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-          ),
-          padding: const EdgeInsets.all(10),
-          child: ListView(
-            shrinkWrap: true,
-            children: [
-              _buildForms(context),
-            ],
-          ),
+        /// TODO: Styling
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        padding: const EdgeInsets.all(10),
+        child: ListView(
+          shrinkWrap: true,
+          children: [
+            _buildForm(context),
+          ],
         ),
       ),
     );
