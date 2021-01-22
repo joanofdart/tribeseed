@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/all.dart';
 import 'package:tribeseed/core/mixins/route_names.dart';
 import 'package:tribeseed/features/auth/auth_widget.dart';
+import 'package:tribeseed/features/home/email_validation/email_validation_widget.dart';
 import 'package:tribeseed/features/home/home.dart';
 
 void main() {
@@ -9,6 +10,8 @@ void main() {
 }
 
 class App extends StatelessWidget with RouteNames {
+  App();
+
   @override
   Widget build(BuildContext context) {
     return ProviderScope(
@@ -21,8 +24,9 @@ class App extends StatelessWidget with RouteNames {
         routes: {
           RouteNames.main: (context) => AuthWidget(
                 signedIn: (_) {
-                  /// TODO: Check for email validation status
-                  return const HomeWidget();
+                  return EmailValidationWidget(
+                    emailValidated: (context) => const HomeWidget(),
+                  );
                 },
               ),
           RouteNames.home: (context) => const HomeWidget(),

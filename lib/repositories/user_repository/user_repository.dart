@@ -1,31 +1,26 @@
-import 'package:tribeseed/core/enums/auth_status.dart';
+import 'package:flutter_riverpod/all.dart';
 
 import 'model/user_model.dart';
 
 abstract class UserRepository {
-  Future<UserModel> fetchUser({String userId});
+  Future<UserModel> authenticate({String userId});
+  Future<UserModel> validateEmail();
 }
 
-class FakeUserRepository implements UserRepository {
-  FakeUserRepository();
+class UserRepositoryImpl implements UserRepository {
+  final ProviderReference ref;
+
+  const UserRepositoryImpl({this.ref});
 
   @override
-  Future<UserModel> fetchUser({String userId = '12345678'}) async {
-    final authenticatedUser = UserModel(
-      id: userId,
-      aboutMe: 'Test User',
-      authStatus: AuthStatus.pendingVerification.name,
-      displayName: 'Test User',
-      emailAddress: 'test@user.com',
-      emailVerified: false,
-      locale: 'en',
-    );
+  Future<UserModel> authenticate({String userId}) {
+    // TODO: implement authenticate
+    throw UnimplementedError();
+  }
 
-    final authenticated = await Future.delayed(
-      const Duration(seconds: 2),
-      () => authenticatedUser,
-    );
-
-    return authenticated;
+  @override
+  Future<UserModel> validateEmail({UserModel userModel}) {
+    // TODO: implement validateEmail
+    throw UnimplementedError();
   }
 }

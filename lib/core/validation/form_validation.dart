@@ -11,7 +11,7 @@ class FieldValidators {
                   fieldValue is Map ||
                   fieldValue is String) &&
               fieldValue.isEmpty)) {
-        return 'Required';
+        return 'Required.';
       }
       return null;
     };
@@ -20,7 +20,7 @@ class FieldValidators {
   static String Function(String, BuildContext) email() {
     return (fieldValue, context) {
       if (!fieldValue.isEmail()) {
-        return 'Email badly formatted';
+        return 'Email badly formatted.';
       }
       return null;
     };
@@ -49,8 +49,6 @@ class FieldValidators {
       if (!fieldValue.isPasswordNormal3()) {
         return 'Complex password required.';
       }
-
-      /// Must contains at least: 1 uppercase letter, 1 lowecase letter & 1 number
       return null;
     };
   }
