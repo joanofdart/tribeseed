@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/all.dart';
-import 'package:tribeseed/core/enums/auth_status.dart';
+import 'package:tribeseed/features/auth/auth_status.dart';
 import 'package:tribeseed/services/authentication/authentication_service_providers.dart';
 
 import 'model/user_model.dart';
@@ -33,7 +33,7 @@ class UserRepositoryMock implements UserRepository {
   @override
   Future<UserModel> validateEmail() async {
     final user = ref.read(currentUserProvider).state.copyWith(
-          authStatus: AuthStatus.emailVerified.name,
+          authStatus: AuthStatus.complete.name,
           emailVerified: true,
         );
     return Future.delayed(

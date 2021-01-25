@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/all.dart';
 import 'package:tribeseed/core/mixins/route_names.dart';
-import 'package:tribeseed/features/auth/auth_widget.dart';
-import 'package:tribeseed/features/home/email_validation/email_validation_widget.dart';
+import 'package:tribeseed/features/auth/auth_manager.dart';
 import 'package:tribeseed/features/home/home.dart';
 
 void main() {
@@ -22,11 +21,9 @@ class App extends StatelessWidget with RouteNames {
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
         routes: {
-          RouteNames.main: (context) => AuthWidget(
-                signedIn: (_) {
-                  return EmailValidationWidget(
-                    emailValidated: (context) => const HomeWidget(),
-                  );
+          RouteNames.main: (context) => AuthManager(
+                authComplete: (_) {
+                  return const HomeWidget();
                 },
               ),
           RouteNames.home: (context) => const HomeWidget(),

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/all.dart';
-import 'package:tribeseed/core/enums/auth_type.dart';
+import 'package:tribeseed/features/auth/auth_type.dart';
 
-import 'auth_viewmodel.dart';
+import 'auth_form_viewmodel.dart';
 
 /// Switch between [SignIn] and [SignUp]
 ///
@@ -16,8 +16,8 @@ final authFormKeyProvider = Provider(
 
 /// Provide a [AuthViewModel] to [AuthWidget]
 ///
-final authViewModelProvider = StateNotifierProvider<AuthViewModel>(
+final authViewModelProvider = StateNotifierProvider<AuthFormViewModel>(
   (ref) {
-    return AuthViewModel(reference: ref);
+    return AuthFormViewModel(reference: ref);
   },
 );

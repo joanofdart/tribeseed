@@ -1,13 +1,9 @@
 import 'package:flutter/foundation.dart';
 
 enum AuthStatus {
-  guest,
-  signedIn,
-  signedUp,
   onboarding,
   pendingVerification,
-  emailVerified,
-  unknown,
+  complete,
 }
 
 extension AuthStatusNames on AuthStatus {

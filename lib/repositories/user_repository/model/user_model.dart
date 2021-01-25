@@ -1,5 +1,3 @@
-import 'package:tribeseed/core/enums/auth_status.dart';
-
 class UserModel {
   final String id;
   final String displayName;
@@ -33,7 +31,7 @@ class UserModel {
         locale = 'en',
         emailAddress = '',
         emailVerified = false,
-        authStatus = AuthStatus.guest.name,
+        authStatus = '',
         createdAt = null,
         updatedAt = null;
 

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/all.dart';
 import 'package:tribeseed/core/base/base_widget.dart';
-import 'package:tribeseed/core/enums/auth_status.dart';
-import 'package:tribeseed/features/home/email_validation/email_validation_providers.dart';
-import 'package:tribeseed/features/home/email_validation/email_validation_viewmodel.dart';
 import 'package:tribeseed/services/authentication/authentication_service_providers.dart';
+
+import 'email_validation_providers.dart';
+import 'email_validation_viewmodel.dart';
 
 class EmailValidationWidget extends ConsumerWidget {
   final WidgetBuilder emailValidated;
@@ -57,11 +57,9 @@ class EmailValidationWidget extends ConsumerWidget {
 
       /// Switch to the [HomeWidget] if the user is `signedIn`
       /// Build the [AuthWidget] if the user is `signedOut`
-      child: currentUser.authStatus == AuthStatus.emailVerified.name
-          ? emailValidated(context)
-          : BaseWidget(
-              child: _buildWidget(context, watch),
-            ),
+      child: BaseWidget(
+        child: _buildWidget(context, watch),
+      ),
     );
   }
 }

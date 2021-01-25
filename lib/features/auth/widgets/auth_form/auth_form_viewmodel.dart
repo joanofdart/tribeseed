@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/all.dart';
-import 'package:tribeseed/core/enums/auth_type.dart';
+import 'package:tribeseed/features/auth/auth_type.dart';
 import 'package:tribeseed/services/authentication/authentication_service_providers.dart';
 
 abstract class AuthState {
@@ -23,10 +23,10 @@ class AuthErrorState extends AuthState {
   });
 }
 
-class AuthViewModel extends StateNotifier<AuthState> {
+class AuthFormViewModel extends StateNotifier<AuthState> {
   final ProviderReference reference;
 
-  AuthViewModel({
+  AuthFormViewModel({
     AuthState state,
     @required this.reference,
   }) : super(state);

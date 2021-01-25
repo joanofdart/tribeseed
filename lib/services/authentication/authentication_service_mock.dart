@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/all.dart';
-import 'package:tribeseed/core/enums/auth_type.dart';
+import 'package:tribeseed/features/auth/auth_type.dart';
 import 'package:tribeseed/repositories/user_repository/user_repository_providers.dart';
 import 'package:tribeseed/services/authentication/authentication_service_providers.dart';
 
