@@ -5,6 +5,8 @@ import 'model/user_model.dart';
 abstract class UserRepository {
   Future<UserModel> authenticate({String userId});
   Future<UserModel> validateEmail();
+  Future<UserModel> invalidateEmail();
+  Future<UserModel> onboardUser();
 }
 
 class UserRepositoryImpl implements UserRepository {
@@ -21,6 +23,18 @@ class UserRepositoryImpl implements UserRepository {
   @override
   Future<UserModel> validateEmail({UserModel userModel}) {
     // TODO: implement validateEmail
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<UserModel> onboardUser() {
+    // TODO: implement onboardUser
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<UserModel> invalidateEmail() {
+    // TODO: implement invalidateEmail
     throw UnimplementedError();
   }
 }

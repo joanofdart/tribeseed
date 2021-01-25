@@ -14,7 +14,7 @@ final authFormKeyProvider = Provider(
   (ref) => GlobalKey<FormState>(),
 );
 
-/// Provide a [AuthViewModel] to [AuthWidget]
+/// Provide a [AuthViewModel] to [AuthFormWidget]
 ///
 final authViewModelProvider = StateNotifierProvider<AuthFormViewModel>(
   (ref) {

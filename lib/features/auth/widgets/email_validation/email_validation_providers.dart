@@ -2,10 +2,10 @@ import 'package:flutter_riverpod/all.dart';
 
 import 'email_validation_viewmodel.dart';
 
-/// Provide a [AuthViewModel] to [AuthWidget]
+/// Provide a [EmailValidationViewModel] to [EmailValidationWidget]
 ///
 final emailViewModelProvider = StateNotifierProvider<EmailValidationViewModel>(
   (ref) {
-    return EmailValidationViewModel(reference: ref);
+    return EmailValidationViewModel(ref: ref);
   },
 );

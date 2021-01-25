@@ -10,6 +10,8 @@ abstract class AuthenticationService {
   });
   Future<void> signOut();
   Future<void> validateEmail();
+  Future<void> invalidateEmail();
+  Future<void> onboardUser();
 }
 
 class AuthenticationServiceImpl implements AuthenticationService {
@@ -38,6 +40,18 @@ class AuthenticationServiceImpl implements AuthenticationService {
   @override
   Future<void> validateEmail() {
     // TODO: implement validateEmail
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> onboardUser() {
+    // TODO: implement onboardUser
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> invalidateEmail() {
+    // TODO: implement invalidateEmail
     throw UnimplementedError();
   }
 }

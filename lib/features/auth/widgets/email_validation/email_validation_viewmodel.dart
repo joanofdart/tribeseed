@@ -5,10 +5,6 @@ abstract class EmailValidationState {
   const EmailValidationState();
 }
 
-class EmailValidationInitialState extends EmailValidationState {
-  const EmailValidationInitialState();
-}
-
 class EmailValidationLoadingState extends EmailValidationState {
   const EmailValidationLoadingState();
 }
@@ -20,25 +16,28 @@ class EmailValidationLoadedState extends EmailValidationState {
 class EmailValidationErrorState extends EmailValidationState {
   final String errorMessage;
 
-  const EmailValidationErrorState(this.errorMessage);
+  const EmailValidationErrorState({
+    this.errorMessage,
+  });
 }
 
 class EmailValidationViewModel extends StateNotifier<EmailValidationState> {
-  final ProviderReference reference;
+  final ProviderReference ref;
 
   EmailValidationViewModel({
     EmailValidationState state,
-    this.reference,
+    this.ref,
   }) : super(state);
 
   Future<void> validateEmail() async {
     state = const EmailValidationLoadingState();
 
     try {
-      await reference.read(authenticationServiceProvider).validateEmail();
+      await ref.read(authenticationServiceProvider).validateEmail();
       state = const EmailValidationLoadedState();
     } catch (error) {
-      state = const EmailValidationErrorState('Some Error');
+      /// TODO: Make the error messages dynamic.
+      state = const EmailValidationErrorState(errorMessage: 'Some Error');
     }
   }
 }

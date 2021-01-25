@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/all.dart';
-import 'package:tribeseed/core/base/base_widget.dart';
+import 'package:tribeseed/core/widgets/base_widget.dart';
 import 'package:tribeseed/features/auth/auth_status.dart';
 import 'package:tribeseed/core/mixins/text_constants.dart';
-import 'package:tribeseed/repositories/user_repository/model/user_model.dart';
+import 'package:tribeseed/features/auth/widgets/email_validation/email_validation.dart';
+import 'package:tribeseed/features/auth/widgets/onboarding/onboarding.dart';
 import 'package:tribeseed/services/authentication/authentication_service_providers.dart';
 
 import 'widgets/auth_form/auth_form.dart';
@@ -23,50 +24,12 @@ class AuthManager extends ConsumerWidget with TextContants {
     return AnimatedSwitcher(
       duration: const Duration(milliseconds: 500),
       child: authStatus == AuthStatus.pendingVerification.name
-          ? Center(
-              key: const ValueKey<String>('AuthEmailValidation'),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text('EmailValidation'),
-                  RaisedButton(
-                    onPressed: () => context.read(currentUserProvider).state =
-                        context.read(currentUserProvider).state.copyWith(
-                              authStatus: AuthStatus.onboarding.name,
-                            ),
-                    child: const Text('Validate Email'),
-                  ),
-                ],
-              ),
+          ? const EmailValidationWidget(
+              key: ValueKey<String>('AuthEmailValidation'),
             )
           : authStatus == AuthStatus.onboarding.name
-              ? Center(
-                  key: const ValueKey<String>('AuthOnboarding'),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text('Onboarding'),
-                      RaisedButton(
-                        onPressed: () => context
-                                .read(currentUserProvider)
-                                .state =
-                            context.read(currentUserProvider).state.copyWith(
-                                  authStatus:
-                                      AuthStatus.pendingVerification.name,
-                                ),
-                        child: const Text('Invalidate Email'),
-                      ),
-                      RaisedButton(
-                        onPressed: () => context
-                                .read(currentUserProvider)
-                                .state =
-                            context.read(currentUserProvider).state.copyWith(
-                                  authStatus: AuthStatus.complete.name,
-                                ),
-                        child: const Text('Or complete profile'),
-                      )
-                    ],
-                  ),
+              ? const OnboardingWidget(
+                  key: ValueKey<String>('AuthOnboarding'),
                 )
               : authComplete(context),
     );
@@ -93,7 +56,7 @@ class AuthManager extends ConsumerWidget with TextContants {
               ),
             )
           : BaseWidget(
-              child: AuthForm(),
+              child: AuthFormWidget(),
             ),
     );
   }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class FormInput extends StatelessWidget {
+class FormInputWidget extends StatelessWidget {
   final String labelText;
   final String helperText;
   final bool isPassword;
@@ -8,7 +8,7 @@ class FormInput extends StatelessWidget {
   final String Function(String) validator;
   final TextEditingController controller;
 
-  const FormInput({
+  const FormInputWidget({
     Key key,
     this.showInput = true,
     this.labelText,

@@ -3,31 +3,31 @@ import 'package:flutter_riverpod/all.dart';
 import 'package:tribeseed/features/auth/auth_type.dart';
 import 'package:tribeseed/services/authentication/authentication_service_providers.dart';
 
-abstract class AuthState {
-  const AuthState();
+abstract class AuthFormState {
+  const AuthFormState();
 }
 
-class AuthLoadingState extends AuthState {
-  const AuthLoadingState();
+class AuthFormLoadingState extends AuthFormState {
+  const AuthFormLoadingState();
 }
 
-class AuthLoadedState extends AuthState {
-  const AuthLoadedState();
+class AuthFormLoadedState extends AuthFormState {
+  const AuthFormLoadedState();
 }
 
-class AuthErrorState extends AuthState {
-  final String message;
+class AuthFormErrorState extends AuthFormState {
+  final String errorMessage;
 
-  const AuthErrorState({
-    this.message,
+  const AuthFormErrorState({
+    this.errorMessage,
   });
 }
 
-class AuthFormViewModel extends StateNotifier<AuthState> {
+class AuthFormViewModel extends StateNotifier<AuthFormState> {
   final ProviderReference reference;
 
   AuthFormViewModel({
-    AuthState state,
+    AuthFormState state,
     @required this.reference,
   }) : super(state);
 
@@ -36,16 +36,18 @@ class AuthFormViewModel extends StateNotifier<AuthState> {
     @required String password,
     @required AuthType authType,
   }) async {
-    state = const AuthLoadingState();
+    state = const AuthFormLoadingState();
     try {
       await reference.read(authenticationServiceProvider).authenticate(
             email: email,
             password: password,
             authType: authType,
           );
-      state = const AuthLoadedState();
+      state = const AuthFormLoadedState();
     } catch (error) {
-      state = const AuthErrorState(message: 'Unknown error');
+      state = const AuthFormErrorState(
+        errorMessage: 'Some error with Authenticate',
+      );
     }
   }
 }

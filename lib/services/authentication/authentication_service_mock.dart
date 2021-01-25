@@ -34,4 +34,16 @@ class AuthenticationServiceMock implements AuthenticationService {
     final user = await ref.read(userRepositoryProvider).validateEmail();
     ref.read(currentUserProvider).state = user;
   }
+
+  @override
+  Future<void> invalidateEmail() async {
+    final user = await ref.read(userRepositoryProvider).invalidateEmail();
+    ref.read(currentUserProvider).state = user;
+  }
+
+  @override
+  Future<void> onboardUser() async {
+    final user = await ref.read(userRepositoryProvider).onboardUser();
+    ref.read(currentUserProvider).state = user;
+  }
 }

@@ -33,8 +33,31 @@ class UserRepositoryMock implements UserRepository {
   @override
   Future<UserModel> validateEmail() async {
     final user = ref.read(currentUserProvider).state.copyWith(
-          authStatus: AuthStatus.complete.name,
+          authStatus: AuthStatus.onboarding.name,
           emailVerified: true,
+        );
+    return Future.delayed(
+      const Duration(seconds: 2),
+      () => user,
+    );
+  }
+
+  @override
+  Future<UserModel> invalidateEmail() {
+    final user = ref.read(currentUserProvider).state.copyWith(
+          authStatus: AuthStatus.pendingVerification.name,
+          emailVerified: false,
+        );
+    return Future.delayed(
+      const Duration(seconds: 2),
+      () => user,
+    );
+  }
+
+  @override
+  Future<UserModel> onboardUser() {
+    final user = ref.read(currentUserProvider).state.copyWith(
+          authStatus: AuthStatus.complete.name,
         );
     return Future.delayed(
       const Duration(seconds: 2),
