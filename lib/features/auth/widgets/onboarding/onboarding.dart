@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/all.dart';
-import 'package:tribeseed/core/widgets/error_state_widget.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tribeseed/core/widgets/loading_state.widget.dart';
-import 'package:tribeseed/core/widgets/state_switcher_widget.dart';
-import 'package:tribeseed/features/auth/widgets/onboarding/onboarding_viewmodel.dart';
 
 import 'onboarding_providers.dart';
 
@@ -12,43 +10,65 @@ class OnboardingWidget extends ConsumerWidget {
     Key key,
   }) : super(key: key);
 
+  Future<void> _invalidateEmail({
+    BuildContext context,
+  }) async {
+    final model = context.read(onboardingViewModelProvider);
+    await model.invalidateEmail();
+  }
+
+  Future<void> _onboardUser({
+    BuildContext context,
+  }) async {
+    final model = context.read(onboardingViewModelProvider);
+    await model.onboardUser();
+  }
+
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    final onboardingState = watch(onboardingViewModelProvider.state);
-    final onboardingViewModel = watch(onboardingViewModelProvider);
+    final model = watch(onboardingViewModelProvider.state);
+    final isLoading = model.maybeWhen(
+      loading: () => true,
+      orElse: () => false,
+    );
 
-    return StateSwitcherWidget(
-      builder: (context) {
-        if (onboardingState is OnboardingLoadingState) {
-          return const LoadingStateWidget();
-        } else if (onboardingState is OnboardingErrorState) {
-          return ErrorStateWidget(
-            errorMessage: onboardingState.errorMessage,
-          );
-        } else {
-          return Center(
-            key: key,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text('Onboarding'),
-                RaisedButton(
-                  onPressed: () {
-                    onboardingViewModel.invalidateEmail();
-                  },
-                  child: const Text('Invalidate Email'),
-                ),
-                RaisedButton(
-                  onPressed: () {
-                    onboardingViewModel.onboardUser();
-                  },
-                  child: const Text('Or complete profile'),
-                )
-              ],
+    model.maybeWhen(
+      error: (error, stackTrace) {
+        print('Error $error');
+        print('Stacktrace $stackTrace');
+
+        SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+          Scaffold.of(context).removeCurrentSnackBar();
+          Scaffold.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Onboarding error ${timeStamp.inSeconds}'),
             ),
           );
-        }
+        });
       },
+      orElse: () => null,
+    );
+
+    if (isLoading) {
+      return const LoadingStateWidget();
+    }
+
+    return Center(
+      key: key,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Text('Onboarding'),
+          RaisedButton(
+            onPressed: () => _invalidateEmail(context: context),
+            child: const Text('Invalidate Email'),
+          ),
+          RaisedButton(
+            onPressed: () => _onboardUser(context: context),
+            child: const Text('Or complete profile'),
+          )
+        ],
+      ),
     );
   }
 }

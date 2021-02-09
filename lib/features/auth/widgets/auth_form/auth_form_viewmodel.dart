@@ -1,53 +1,32 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter_riverpod/all.dart';
-import 'package:tribeseed/features/auth/auth_type.dart';
-import 'package:tribeseed/services/authentication/authentication_service_providers.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tribeseed/services/authentication/authentication_service.dart';
 
-abstract class AuthFormState {
-  const AuthFormState();
-}
+import 'auth_type.dart';
 
-class AuthFormLoadingState extends AuthFormState {
-  const AuthFormLoadingState();
-}
-
-class AuthFormLoadedState extends AuthFormState {
-  const AuthFormLoadedState();
-}
-
-class AuthFormErrorState extends AuthFormState {
-  final String errorMessage;
-
-  const AuthFormErrorState({
-    this.errorMessage,
-  });
-}
-
-class AuthFormViewModel extends StateNotifier<AuthFormState> {
-  final ProviderReference reference;
+class AuthFormViewModel extends StateNotifier<AsyncValue<bool>> {
+  final AuthenticationService authenticationService;
 
   AuthFormViewModel({
-    AuthFormState state,
-    @required this.reference,
-  }) : super(state);
+    @required this.authenticationService,
+  }) : super(const AsyncData(false));
 
   Future<void> authenticate({
     @required String email,
     @required String password,
     @required AuthType authType,
   }) async {
-    state = const AuthFormLoadingState();
+    state = const AsyncLoading();
     try {
-      await reference.read(authenticationServiceProvider).authenticate(
-            email: email,
-            password: password,
-            authType: authType,
-          );
-      state = const AuthFormLoadedState();
-    } catch (error) {
-      state = const AuthFormErrorState(
-        errorMessage: 'Some error with Authenticate',
+      await authenticationService.authenticate(
+        email: email,
+        password: password,
+        authType: authType,
       );
+      state = const AsyncData(true);
+    } catch (error) {
+      print('Error $error');
+      state = AsyncError(error);
     }
   }
 }

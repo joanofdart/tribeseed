@@ -1,17 +1,13 @@
-import 'package:flutter_riverpod/all.dart';
 import 'package:tribeseed/features/auth/auth_status.dart';
-import 'package:tribeseed/services/authentication/authentication_service_providers.dart';
 
 import 'model/user_model.dart';
 import 'user_repository.dart';
 
 class UserRepositoryMock implements UserRepository {
-  final ProviderReference ref;
-
-  UserRepositoryMock({this.ref});
+  const UserRepositoryMock();
 
   @override
-  Future<UserModel> authenticate({String userId = '12345678'}) async {
+  Future<UserModel> authenticate(String userId) async {
     final authenticatedUser = UserModel(
       id: userId,
       aboutMe: 'Test User',
@@ -31,11 +27,11 @@ class UserRepositoryMock implements UserRepository {
   }
 
   @override
-  Future<UserModel> validateEmail() async {
-    final user = ref.read(currentUserProvider).state.copyWith(
-          authStatus: AuthStatus.onboarding.name,
-          emailVerified: true,
-        );
+  Future<UserModel> validateEmail(UserModel userModel) async {
+    final user = userModel.copyWith(
+      authStatus: AuthStatus.onboarding.name,
+      emailVerified: true,
+    );
     return Future.delayed(
       const Duration(seconds: 2),
       () => user,
@@ -43,11 +39,11 @@ class UserRepositoryMock implements UserRepository {
   }
 
   @override
-  Future<UserModel> invalidateEmail() {
-    final user = ref.read(currentUserProvider).state.copyWith(
-          authStatus: AuthStatus.pendingVerification.name,
-          emailVerified: false,
-        );
+  Future<UserModel> invalidateEmail(UserModel userModel) {
+    final user = userModel.copyWith(
+      authStatus: AuthStatus.pendingVerification.name,
+      emailVerified: false,
+    );
     return Future.delayed(
       const Duration(seconds: 2),
       () => user,
@@ -55,10 +51,10 @@ class UserRepositoryMock implements UserRepository {
   }
 
   @override
-  Future<UserModel> onboardUser() {
-    final user = ref.read(currentUserProvider).state.copyWith(
-          authStatus: AuthStatus.complete.name,
-        );
+  Future<UserModel> onboardUser(UserModel userModel) {
+    final user = userModel.copyWith(
+      authStatus: AuthStatus.complete.name,
+    );
     return Future.delayed(
       const Duration(seconds: 2),
       () => user,

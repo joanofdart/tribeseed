@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/all.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tribeseed/core/mixins/route_names.dart';
 import 'package:tribeseed/features/auth/auth_manager.dart';
 import 'package:tribeseed/features/home/home.dart';

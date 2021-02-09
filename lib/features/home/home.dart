@@ -13,13 +13,16 @@ class HomeWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Consumer(builder: (context, watch, child) {
-              final user = watch(currentUserProvider).state;
+              final currentUser = watch(currentUserProvider).state;
+
               return Column(
                 children: [
-                  Text(user.displayName),
-                  Text(user.authStatus),
+                  Text(currentUser?.displayName ?? ''),
+                  Text(currentUser?.authStatus ?? ''),
                   RaisedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      context.read(authenticationServiceProvider).signOut();
+                    },
                     child: const Text('Logout'),
                   ),
                 ],

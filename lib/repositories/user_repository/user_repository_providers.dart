@@ -1,4 +1,4 @@
-import 'package:flutter_riverpod/all.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tribeseed/main_providers.dart';
 
 import 'user_repository.dart';
@@ -9,9 +9,9 @@ final userRepositoryProvider = Provider<UserRepository>(
     final useServiceMocks = ref.watch(useServiceMocksProvider).state;
 
     if (useServiceMocks) {
-      return UserRepositoryMock(ref: ref);
+      return const UserRepositoryMock();
     }
 
-    return UserRepositoryImpl(ref: ref);
+    return const UserRepositoryImpl();
   },
 );

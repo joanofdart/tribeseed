@@ -1,25 +1,36 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter_riverpod/all.dart';
-import 'package:tribeseed/features/auth/auth_type.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tribeseed/features/auth/widgets/auth_form/auth_type.dart';
+import 'package:tribeseed/repositories/user_repository/model/user_model.dart';
+import 'package:tribeseed/repositories/user_repository/user_repository.dart';
 
 abstract class AuthenticationService {
+  UserModel currentUser();
   Future<void> authenticate({
     @required String email,
     @required String password,
     @required AuthType authType,
   });
-  Future<void> signOut();
   Future<void> validateEmail();
   Future<void> invalidateEmail();
   Future<void> onboardUser();
+  void signOut();
 }
 
 class AuthenticationServiceImpl implements AuthenticationService {
-  final ProviderReference ref;
+  final UserRepository userRepository;
+  final Reader reader;
 
-  const AuthenticationServiceImpl({
-    this.ref,
+  AuthenticationServiceImpl({
+    @required this.userRepository,
+    @required this.reader,
   });
+
+  @override
+  UserModel currentUser() {
+    // TODO: implement currentUser
+    throw UnimplementedError();
+  }
 
   @override
   Future<void> authenticate({
@@ -32,7 +43,7 @@ class AuthenticationServiceImpl implements AuthenticationService {
   }
 
   @override
-  Future<void> signOut() {
+  void signOut() {
     // TODO: implement signOut
     throw UnimplementedError();
   }

@@ -1,43 +1,27 @@
-import 'package:flutter_riverpod/all.dart';
-import 'package:tribeseed/services/authentication/authentication_service_providers.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tribeseed/services/authentication/authentication_service.dart';
 
-abstract class EmailValidationState {
-  const EmailValidationState();
-}
-
-class EmailValidationLoadingState extends EmailValidationState {
-  const EmailValidationLoadingState();
-}
-
-class EmailValidationLoadedState extends EmailValidationState {
-  const EmailValidationLoadedState();
-}
-
-class EmailValidationErrorState extends EmailValidationState {
-  final String errorMessage;
-
-  const EmailValidationErrorState({
-    this.errorMessage,
-  });
-}
-
-class EmailValidationViewModel extends StateNotifier<EmailValidationState> {
-  final ProviderReference ref;
+class EmailValidationViewModel extends StateNotifier<AsyncValue<bool>> {
+  final AuthenticationService authenticationService;
 
   EmailValidationViewModel({
-    EmailValidationState state,
-    this.ref,
-  }) : super(state);
+    this.authenticationService,
+  }) : super(const AsyncLoading()) {
+    _fetchEmailValidationState();
+  }
+
+  void _fetchEmailValidationState() {
+    state = AsyncData(authenticationService.currentUser().emailVerified);
+  }
 
   Future<void> validateEmail() async {
-    state = const EmailValidationLoadingState();
+    state = const AsyncLoading();
 
     try {
-      await ref.read(authenticationServiceProvider).validateEmail();
-      state = const EmailValidationLoadedState();
+      await authenticationService.validateEmail();
+      state = AsyncData(authenticationService.currentUser().emailVerified);
     } catch (error) {
-      /// TODO: Make the error messages dynamic.
-      state = const EmailValidationErrorState(errorMessage: 'Some Error');
+      state = AsyncError(error);
     }
   }
 }

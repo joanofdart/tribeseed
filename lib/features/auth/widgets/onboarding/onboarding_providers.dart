@@ -1,10 +1,11 @@
-import 'package:flutter_riverpod/all.dart';
-import 'package:tribeseed/features/auth/widgets/onboarding/onboarding_viewmodel.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tribeseed/services/authentication/authentication_service_providers.dart';
 
-/// Provide a [EmailValidationViewModel] to [EmailValidationWidget]
-///
+import 'onboarding_viewmodel.dart';
+
 final onboardingViewModelProvider = StateNotifierProvider<OnboardingViewModel>(
   (ref) {
-    return OnboardingViewModel(ref: ref);
+    final authService = ref.watch(authenticationServiceProvider);
+    return OnboardingViewModel(authenticationService: authService);
   },
 );

@@ -1,17 +1,26 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter_riverpod/all.dart';
-import 'package:tribeseed/features/auth/auth_type.dart';
-import 'package:tribeseed/repositories/user_repository/user_repository_providers.dart';
-import 'package:tribeseed/services/authentication/authentication_service_providers.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tribeseed/features/auth/widgets/auth_form/auth_type.dart';
+import 'package:tribeseed/repositories/user_repository/model/user_model.dart';
+import 'package:tribeseed/repositories/user_repository/user_repository.dart';
+import 'package:uuid/uuid.dart';
 
 import 'authentication_service.dart';
+import 'authentication_service_providers.dart';
 
 class AuthenticationServiceMock implements AuthenticationService {
-  final ProviderReference ref;
+  final UserRepository userRepository;
+  final Reader reader;
 
   AuthenticationServiceMock({
-    @required this.ref,
+    @required this.userRepository,
+    @required this.reader,
   });
+
+  @override
+  UserModel currentUser() {
+    return reader(currentUserProvider).state;
+  }
 
   @override
   Future<void> authenticate({
@@ -19,31 +28,31 @@ class AuthenticationServiceMock implements AuthenticationService {
     @required String password,
     @required AuthType authType,
   }) async {
-    final user = await ref.read(userRepositoryProvider).authenticate();
-    ref.read(currentUserProvider).state = user;
+    final generatedId = Uuid().v4();
+    final user = await userRepository.authenticate(generatedId);
+    reader(currentUserProvider).state = user;
   }
 
   @override
-  Future<void> signOut() {
-    // TODO: implement signOut
-    throw UnimplementedError();
+  void signOut() {
+    reader(currentUserProvider).state = null;
   }
 
   @override
   Future<void> validateEmail() async {
-    final user = await ref.read(userRepositoryProvider).validateEmail();
-    ref.read(currentUserProvider).state = user;
+    final user = await userRepository.validateEmail(currentUser());
+    reader(currentUserProvider).state = user;
   }
 
   @override
   Future<void> invalidateEmail() async {
-    final user = await ref.read(userRepositoryProvider).invalidateEmail();
-    ref.read(currentUserProvider).state = user;
+    final user = await userRepository.invalidateEmail(currentUser());
+    reader(currentUserProvider).state = user;
   }
 
   @override
   Future<void> onboardUser() async {
-    final user = await ref.read(userRepositoryProvider).onboardUser();
-    ref.read(currentUserProvider).state = user;
+    final user = await userRepository.onboardUser(currentUser());
+    reader(currentUserProvider).state = user;
   }
 }

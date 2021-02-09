@@ -1,18 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/all.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tribeseed/core/widgets/base_widget.dart';
-import 'package:tribeseed/features/auth/auth_status.dart';
-import 'package:tribeseed/core/mixins/text_constants.dart';
-import 'package:tribeseed/features/auth/widgets/email_validation/email_validation.dart';
-import 'package:tribeseed/features/auth/widgets/onboarding/onboarding.dart';
 import 'package:tribeseed/services/authentication/authentication_service_providers.dart';
 
-import 'widgets/auth_form/auth_form.dart';
+import 'auth_status.dart';
+import 'widgets/widgets.dart';
 
-class AuthManager extends ConsumerWidget with TextContants {
+class AuthManager extends ConsumerWidget {
   final WidgetBuilder authComplete;
 
-  AuthManager({
+  const AuthManager({
     Key key,
     this.authComplete,
   }) : super(key: key);
@@ -43,21 +40,19 @@ class AuthManager extends ConsumerWidget with TextContants {
       'Current user ${currentUser?.displayName} -  ${currentUser?.emailVerified}',
     );
 
-    return AnimatedSwitcher(
-      duration: const Duration(milliseconds: 500),
+    return BaseWidget(
+      child: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 500),
 
-      /// Switch to the [HomeWidget] if the user is `signedIn`
-      /// Build the [AuthWidget] if the user is `signedOut`
-      child: currentUser != null
-          ? BaseWidget(
-              child: _buildAuthFlow(
+        /// Switch to the [HomeWidget] if the user is `signedIn`
+        /// Build the [AuthWidget] if the user is `signedOut`
+        child: currentUser != null
+            ? _buildAuthFlow(
                 authStatus: currentUser.authStatus,
                 context: context,
-              ),
-            )
-          : BaseWidget(
-              child: AuthFormWidget(),
-            ),
+              )
+            : AuthFormWidget(),
+      ),
     );
   }
 }
