@@ -1,5 +1,3 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'model/user_model.dart';
 
 abstract class UserRepository {
