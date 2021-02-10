@@ -1,31 +1,29 @@
-import 'package:tribeseed/core/enums/auth_status.dart';
-
 import 'model/user_model.dart';
 
 abstract class UserRepository {
-  Future<UserModel> fetchUser({String userId});
+  Future<bool> create(UserModel userModel);
+  Future<bool> update(UserModel userModel);
+  Future<bool> disable(String userId);
 }
 
-class FakeUserRepository implements UserRepository {
-  FakeUserRepository();
+class UserRepositoryImpl implements UserRepository {
+  const UserRepositoryImpl();
 
   @override
-  Future<UserModel> fetchUser({String userId = '12345678'}) async {
-    final authenticatedUser = UserModel(
-      id: userId,
-      aboutMe: 'Test User',
-      authStatus: AuthStatus.pendingVerification.name,
-      displayName: 'Test User',
-      emailAddress: 'test@user.com',
-      emailVerified: false,
-      locale: 'en',
-    );
+  Future<bool> create(UserModel userModel) {
+    // TODO: implement create
+    throw UnimplementedError();
+  }
 
-    final authenticated = await Future.delayed(
-      const Duration(seconds: 2),
-      () => authenticatedUser,
-    );
+  @override
+  Future<bool> disable(String userId) {
+    // TODO: implement disable
+    throw UnimplementedError();
+  }
 
-    return authenticated;
+  @override
+  Future<bool> update(UserModel userModel) {
+    // TODO: implement update
+    throw UnimplementedError();
   }
 }

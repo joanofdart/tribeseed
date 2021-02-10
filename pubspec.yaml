@@ -1,7 +1,7 @@
 name: tribeseed
 description: A social tribing app.
-publish_to: 'none'
-version: 1.0.0+1
+publish_to: "none"
+version: 1.0.0+2
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
@@ -10,13 +10,21 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.0
-  flutter_riverpod: ^0.12.1
+  flutter_riverpod: ^0.12.4
+  freezed_annotation: ^0.12.0
   lint: ^1.3.0
+  mockito: ^4.1.4
   regexpattern: ^1.0.0
+  uuid: ^2.2.2
 
 dev_dependencies:
+  flutter_driver:
+    sdk: flutter
   flutter_test:
     sdk: flutter
+  build_runner: ^1.11.1
+  freezed: ^0.12.7
+  integration_test: ^1.0.2+2
 
 flutter:
   uses-material-design: true
