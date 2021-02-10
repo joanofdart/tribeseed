@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:tribeseed/features/auth/widgets/auth_form/auth_type.dart';
+import 'package:tribeseed/features/auth/auth_status.dart';
+import 'package:tribeseed/core/enums/auth_type.dart';
 import 'package:tribeseed/repositories/user_repository/model/user_model.dart';
 import 'package:tribeseed/repositories/user_repository/user_repository.dart';
 import 'package:uuid/uuid.dart';
@@ -27,10 +28,31 @@ class AuthenticationServiceMock implements AuthenticationService {
     @required String email,
     @required String password,
     @required AuthType authType,
+    AuthStatus authStatus = AuthStatus.pendingVerification,
   }) async {
-    final generatedId = Uuid().v4();
-    final user = await userRepository.authenticate(generatedId);
-    reader(currentUserProvider).state = user;
+    switch (authType) {
+      case AuthType.signUp:
+
+        ///Authenticate user and retrieve data from DB
+        ///
+        try {
+          final authenticatedUser = _generateRandomUser(authStatus);
+          await userRepository.create(authenticatedUser);
+          reader(currentUserProvider).state = authenticatedUser;
+        } catch (_) {
+          rethrow;
+        }
+        break;
+
+      case AuthType.signIn:
+      default:
+
+        ///Authenticate user
+        ///
+        final authenticatedUser = _generateRandomUser(authStatus);
+        reader(currentUserProvider).state = authenticatedUser;
+        break;
+    }
   }
 
   @override
@@ -40,19 +62,60 @@ class AuthenticationServiceMock implements AuthenticationService {
 
   @override
   Future<void> validateEmail() async {
-    final user = await userRepository.validateEmail(currentUser());
-    reader(currentUserProvider).state = user;
+    try {
+      final user = currentUser();
+      final modifiedUser = user.copyWith(
+        emailVerified: true,
+        authStatus: AuthStatus.onboarding.name,
+      );
+      await userRepository.update(modifiedUser);
+      reader(currentUserProvider).state = modifiedUser;
+    } catch (_) {
+      rethrow;
+    }
   }
 
   @override
   Future<void> invalidateEmail() async {
-    final user = await userRepository.invalidateEmail(currentUser());
-    reader(currentUserProvider).state = user;
+    try {
+      final user = currentUser();
+      final modifiedUser = user.copyWith(
+        emailVerified: false,
+        authStatus: AuthStatus.pendingVerification.name,
+      );
+      await userRepository.update(modifiedUser);
+      reader(currentUserProvider).state = modifiedUser;
+    } catch (_) {
+      rethrow;
+    }
   }
 
   @override
   Future<void> onboardUser() async {
-    final user = await userRepository.onboardUser(currentUser());
-    reader(currentUserProvider).state = user;
+    try {
+      final user = currentUser();
+      final modifiedUser = user.copyWith(
+        authStatus: AuthStatus.complete.name,
+      );
+      await userRepository.update(modifiedUser);
+      reader(currentUserProvider).state = modifiedUser;
+    } catch (_) {
+      rethrow;
+    }
+  }
+
+  UserModel _generateRandomUser(AuthStatus authStatus) {
+    final uuid = Uuid().v4();
+    final generatedUser = UserModel(
+      id: uuid,
+      aboutMe: 'Test User',
+      authStatus: authStatus.name,
+      displayName: 'Test User',
+      emailAddress: 'test@user.com',
+      emailVerified: authStatus.name == AuthStatus.onboarding.name ||
+          authStatus.name == AuthStatus.complete.name,
+      locale: 'en',
+    );
+    return generatedUser;
   }
 }

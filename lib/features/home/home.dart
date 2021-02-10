@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tribeseed/core/widgets/base_widget.dart';
 import 'package:tribeseed/services/authentication/authentication_service_providers.dart';
 
 class HomeWidget extends StatelessWidget {
@@ -7,8 +8,8 @@ class HomeWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
+    return BaseWidget(
+      child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

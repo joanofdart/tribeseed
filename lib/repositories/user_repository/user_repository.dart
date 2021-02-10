@@ -1,36 +1,29 @@
 import 'model/user_model.dart';
 
 abstract class UserRepository {
-  Future<UserModel> authenticate(String userId);
-  Future<UserModel> validateEmail(UserModel userModel);
-  Future<UserModel> invalidateEmail(UserModel userModel);
-  Future<UserModel> onboardUser(UserModel userModel);
+  Future<bool> create(UserModel userModel);
+  Future<bool> update(UserModel userModel);
+  Future<bool> disable(String userId);
 }
 
 class UserRepositoryImpl implements UserRepository {
   const UserRepositoryImpl();
 
   @override
-  Future<UserModel> authenticate(String userId) {
-    // TODO: implement authenticate
+  Future<bool> create(UserModel userModel) {
+    // TODO: implement create
     throw UnimplementedError();
   }
 
   @override
-  Future<UserModel> validateEmail(UserModel userModel) {
-    // TODO: implement validateEmail
+  Future<bool> disable(String userId) {
+    // TODO: implement disable
     throw UnimplementedError();
   }
 
   @override
-  Future<UserModel> onboardUser(UserModel userModel) {
-    // TODO: implement onboardUser
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<UserModel> invalidateEmail(UserModel userModel) {
-    // TODO: implement invalidateEmail
+  Future<bool> update(UserModel userModel) {
+    // TODO: implement update
     throw UnimplementedError();
   }
 }

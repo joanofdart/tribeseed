@@ -9,8 +9,6 @@ void main() {
 }
 
 class App extends StatelessWidget with RouteNames {
-  App();
-
   @override
   Widget build(BuildContext context) {
     return ProviderScope(
@@ -22,7 +20,7 @@ class App extends StatelessWidget with RouteNames {
         ),
         routes: {
           RouteNames.main: (context) => AuthManager(
-                authComplete: (_) {
+                authComplete: (context) {
                   return const HomeWidget();
                 },
               ),

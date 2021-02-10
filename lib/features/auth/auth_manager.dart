@@ -18,18 +18,17 @@ class AuthManager extends ConsumerWidget {
     String authStatus,
     BuildContext context,
   }) {
-    return AnimatedSwitcher(
-      duration: const Duration(milliseconds: 500),
-      child: authStatus == AuthStatus.pendingVerification.name
-          ? const EmailValidationWidget(
-              key: ValueKey<String>('AuthEmailValidation'),
-            )
-          : authStatus == AuthStatus.onboarding.name
-              ? const OnboardingWidget(
-                  key: ValueKey<String>('AuthOnboarding'),
-                )
-              : authComplete(context),
-    );
+    if (authStatus == AuthStatus.pendingVerification.name) {
+      return const EmailValidationWidget(
+        key: ValueKey<String>('AuthEmailValidation'),
+      );
+    } else if (authStatus == AuthStatus.onboarding.name) {
+      return const OnboardingWidget(
+        key: ValueKey<String>('AuthOnboarding'),
+      );
+    } else {
+      return authComplete(context);
+    }
   }
 
   @override
@@ -51,7 +50,9 @@ class AuthManager extends ConsumerWidget {
                 authStatus: currentUser.authStatus,
                 context: context,
               )
-            : AuthFormWidget(),
+            : AuthFormWidget(
+                key: const ValueKey<String>('AuthForm'),
+              ),
       ),
     );
   }
