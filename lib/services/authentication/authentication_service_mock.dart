@@ -40,6 +40,7 @@ class AuthenticationServiceMock implements AuthenticationService {
           final authenticatedUser = _generateUser(
             authStatus,
             email: email,
+            displayName: displayName,
           );
           await userRepository.create(authenticatedUser);
           reader(currentUserProvider).state = authenticatedUser;

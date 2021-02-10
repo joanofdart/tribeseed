@@ -38,12 +38,8 @@ class _AuthFormWidgetState extends State<AuthFormWidget> {
     _emailController = TextEditingController();
     _passwordController = TextEditingController();
 
-    _title = _authType == AuthType.signIn
-        ? TextContants.authSignInTitle
-        : TextContants.authSignUpTitle;
-    _btnText = _authType == AuthType.signIn
-        ? TextContants.authSignUpTitle
-        : TextContants.authSignInTitle;
+    _title = TextContants.authSignInTitle;
+    _btnText = TextContants.authSignUpTitle;
   }
 
   @override
@@ -151,34 +147,36 @@ class _AuthFormWidgetState extends State<AuthFormWidget> {
                         onPressed: () {
                           if (_formKey.currentState.validate()) {
                             context.read(authViewModelProvider).authenticate(
+                                  displayName: _fullNameController.value.text,
                                   email: _emailController.value.text,
                                   password: _passwordController.value.text,
                                   authType: _authType,
                                 );
                           }
                         },
-                        child: Text(_title),
+                        child: Text(_btnText),
                       ),
-                      AnimatedSwitcher(
-                        duration: const Duration(milliseconds: 500),
-                        child: RaisedButton(
-                          key: ValueKey<String>(_btnText),
-                          onPressed: () {
-                            if (_authType == AuthType.signIn) {
-                              setState(() {
-                                _authType = AuthType.signUp;
-                              });
-                            } else {
-                              setState(() {
-                                _authType = AuthType.signIn;
-                              });
-                            }
-                          },
-                          child: Text(
-                            '$_btnText instead',
-                            key: const ValueKey<String>('AuthTypeText'),
-                            textAlign: TextAlign.center,
-                          ),
+                      RaisedButton(
+                        key: ValueKey<String>(_btnText),
+                        onPressed: () {
+                          if (_authType == AuthType.signIn) {
+                            setState(() {
+                              _authType = AuthType.signUp;
+                              _title = TextContants.authSignUpTitle;
+                              _btnText = TextContants.authSignInTitle;
+                            });
+                          } else {
+                            setState(() {
+                              _authType = AuthType.signIn;
+                              _title = TextContants.authSignInTitle;
+                              _btnText = TextContants.authSignUpTitle;
+                            });
+                          }
+                        },
+                        child: Text(
+                          '$_btnText instead!',
+                          key: const ValueKey<String>('AuthTypeText'),
+                          textAlign: TextAlign.center,
                         ),
                       ),
                       if (kDebugMode)

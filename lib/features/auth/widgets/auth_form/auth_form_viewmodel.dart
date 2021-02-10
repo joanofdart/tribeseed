@@ -11,6 +11,7 @@ class AuthFormViewModel extends StateNotifier<AsyncValue<bool>> {
   }) : super(const AsyncData(false));
 
   Future<void> authenticate({
+    String displayName,
     @required String email,
     @required String password,
     @required AuthType authType,
@@ -18,6 +19,7 @@ class AuthFormViewModel extends StateNotifier<AsyncValue<bool>> {
     state = const AsyncLoading();
     try {
       await authenticationService.authenticate(
+        displayName: displayName,
         email: email,
         password: password,
         authType: authType,
