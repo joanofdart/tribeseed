@@ -50,8 +50,8 @@ class AuthManager extends ConsumerWidget {
                 authStatus: currentUser.authStatus,
                 context: context,
               )
-            : AuthFormWidget(
-                key: const ValueKey<String>('AuthForm'),
+            : const AuthFormWidget(
+                key: ValueKey<String>('AuthForm'),
               ),
       ),
     );

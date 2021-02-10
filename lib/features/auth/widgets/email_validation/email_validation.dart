@@ -13,20 +13,20 @@ class EmailValidationWidget extends ConsumerWidget {
   Future<void> _validateEmail({
     BuildContext context,
   }) async {
-    final model = context.read(emailViewModelProvider);
-    await model.validateEmail();
+    final viewModel = context.read(emailViewModelProvider);
+    await viewModel.validateEmail();
   }
 
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    final model = watch(emailViewModelProvider.state);
+    final viewModel = watch(emailViewModelProvider.state);
     final currentUser = watch(currentUserProvider).state;
-    final isLoading = model.maybeWhen(
+    final isLoading = viewModel.maybeWhen(
       loading: () => true,
       orElse: () => false,
     );
 
-    final errorMessage = model.maybeWhen(
+    final errorMessage = viewModel.maybeWhen(
       error: (error, stackTrace) {
         print('Error $error');
         print('Stacktrace $stackTrace');

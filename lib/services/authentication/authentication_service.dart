@@ -11,6 +11,7 @@ abstract class AuthenticationService {
     @required String email,
     @required String password,
     @required AuthType authType,
+    String displayName,
     AuthStatus authStatus,
   });
   Future<void> validateEmail();
@@ -38,6 +39,7 @@ class AuthenticationServiceImpl implements AuthenticationService {
   Future<void> authenticate({
     String email,
     String password,
+    String displayName,
     AuthType authType,
     AuthStatus authStatus,
   }) {

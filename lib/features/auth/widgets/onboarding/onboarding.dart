@@ -13,26 +13,26 @@ class OnboardingWidget extends ConsumerWidget {
   Future<void> _invalidateEmail({
     BuildContext context,
   }) async {
-    final model = context.read(onboardingViewModelProvider);
-    await model.invalidateEmail();
+    final viewModel = context.read(onboardingViewModelProvider);
+    await viewModel.invalidateEmail();
   }
 
   Future<void> _onboardUser({
     BuildContext context,
   }) async {
-    final model = context.read(onboardingViewModelProvider);
-    await model.onboardUser();
+    final viewModel = context.read(onboardingViewModelProvider);
+    await viewModel.onboardUser();
   }
 
   @override
   Widget build(BuildContext context, ScopedReader watch) {
-    final model = watch(onboardingViewModelProvider.state);
-    final isLoading = model.maybeWhen(
+    final viewModel = watch(onboardingViewModelProvider.state);
+    final isLoading = viewModel.maybeWhen(
       loading: () => true,
       orElse: () => false,
     );
 
-    model.maybeWhen(
+    viewModel.maybeWhen(
       error: (error, stackTrace) {
         print('Error $error');
         print('Stacktrace $stackTrace');

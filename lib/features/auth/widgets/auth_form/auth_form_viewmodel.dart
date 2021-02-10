@@ -1,8 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tribeseed/core/enums/auth_type.dart';
 import 'package:tribeseed/services/authentication/authentication_service.dart';
-
-import '../../../../core/enums/auth_type.dart';
 
 class AuthFormViewModel extends StateNotifier<AsyncValue<bool>> {
   final AuthenticationService authenticationService;

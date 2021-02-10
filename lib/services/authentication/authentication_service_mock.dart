@@ -25,6 +25,7 @@ class AuthenticationServiceMock implements AuthenticationService {
 
   @override
   Future<void> authenticate({
+    String displayName,
     @required String email,
     @required String password,
     @required AuthType authType,
@@ -36,7 +37,10 @@ class AuthenticationServiceMock implements AuthenticationService {
         ///Authenticate user and retrieve data from DB
         ///
         try {
-          final authenticatedUser = _generateRandomUser(authStatus);
+          final authenticatedUser = _generateUser(
+            authStatus,
+            email: email,
+          );
           await userRepository.create(authenticatedUser);
           reader(currentUserProvider).state = authenticatedUser;
         } catch (_) {
@@ -49,7 +53,11 @@ class AuthenticationServiceMock implements AuthenticationService {
 
         ///Authenticate user
         ///
-        final authenticatedUser = _generateRandomUser(authStatus);
+        final authenticatedUser = _generateUser(
+          authStatus,
+          email: email,
+          displayName: displayName,
+        );
         reader(currentUserProvider).state = authenticatedUser;
         break;
     }
@@ -104,14 +112,18 @@ class AuthenticationServiceMock implements AuthenticationService {
     }
   }
 
-  UserModel _generateRandomUser(AuthStatus authStatus) {
+  UserModel _generateUser(
+    AuthStatus authStatus, {
+    String email,
+    String displayName,
+  }) {
     final uuid = Uuid().v4();
     final generatedUser = UserModel(
       id: uuid,
-      aboutMe: 'Test User',
+      aboutMe: 'Lorem ipsum dolore',
       authStatus: authStatus.name,
-      displayName: 'Test User',
-      emailAddress: 'test@user.com',
+      displayName: displayName ?? 'Test User',
+      emailAddress: email ?? 'test@user.com',
       emailVerified: authStatus.name == AuthStatus.onboarding.name ||
           authStatus.name == AuthStatus.complete.name,
       locale: 'en',

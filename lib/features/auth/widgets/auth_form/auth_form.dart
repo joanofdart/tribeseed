@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,148 +10,197 @@ import 'package:tribeseed/core/widgets/form_input_widget.dart';
 
 import 'auth_form_providers.dart';
 
-class AuthFormWidget extends ConsumerWidget {
-  final fullNameController = TextEditingController();
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
-
-  AuthFormWidget({Key key}) : super(key: key);
+class AuthFormWidget extends StatefulWidget {
+  const AuthFormWidget({Key key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, ScopedReader watch) {
-    final model = watch(authViewModelProvider.state);
-    final authType = watch(authTypeProvider).state;
-    final formKey = watch(authFormKeyProvider);
-    final formTitle = authType == AuthType.signIn
+  _AuthFormWidgetState createState() => _AuthFormWidgetState();
+}
+
+class _AuthFormWidgetState extends State<AuthFormWidget> {
+  AuthType _authType;
+  GlobalKey<FormState> _formKey;
+
+  TextEditingController _fullNameController;
+  TextEditingController _emailController;
+  TextEditingController _passwordController;
+
+  String _title;
+  String _btnText;
+
+  @override
+  void initState() {
+    super.initState();
+    _authType = AuthType.signIn;
+    _formKey = GlobalKey<FormState>();
+
+    _fullNameController = TextEditingController();
+    _emailController = TextEditingController();
+    _passwordController = TextEditingController();
+
+    _title = _authType == AuthType.signIn
         ? TextContants.authSignInTitle
         : TextContants.authSignUpTitle;
-    final buttonText = authType == AuthType.signIn
+    _btnText = _authType == AuthType.signIn
         ? TextContants.authSignUpTitle
         : TextContants.authSignInTitle;
+  }
 
-    final isLoading = model.maybeWhen(
-      loading: () => true,
-      orElse: () => false,
-    );
+  @override
+  void dispose() {
+    _fullNameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
 
-    /// TODO: Check if there's a better way to manage an error state.
-    model.maybeWhen(
-      error: (error, stackTrace) {
-        print('Error $error');
-        print('Stacktrace $stackTrace');
+    super.dispose();
+  }
 
-        SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
-          Scaffold.of(context).removeCurrentSnackBar();
-          Scaffold.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Auth form Error ${timeStamp.inSeconds}'),
-            ),
-          );
-        });
-      },
-      orElse: () => null,
-    );
+  @override
+  Widget build(BuildContext context) {
+    return Consumer(
+      builder: (context, watch, child) {
+        final viewModel = watch(authViewModelProvider.state);
 
-    if (isLoading) {
-      return const LoadingStateWidget();
-    }
+        final isLoading = viewModel.maybeWhen(
+          loading: () => true,
+          orElse: () => false,
+        );
 
-    return Scaffold(
-      key: key,
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(10),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            /// TODO: Replace this with the proper logo.
-            const FlutterLogo(
-              size: 150,
-            ),
-            Form(
-              key: formKey,
-              child: Column(
-                children: [
-                  Text(formTitle),
-                  FormInputWidget(
-                    key: const ValueKey<String>('AuthFullNameField'),
-                    labelText: TextContants.authFullnameLabel,
-                    helperText: TextContants.authFullnameDescription,
-                    showInput: authType != AuthType.signIn,
-                    validator: (value) => FormValidation.validate(
-                      fieldValidators: [
-                        FieldValidators.required(),
-                      ],
-                      fieldValue: value,
-                    ),
-                  ),
-                  FormInputWidget(
-                    key: const ValueKey<String>('AuthEmailField'),
-                    labelText: TextContants.authEmailLabel,
-                    helperText: TextContants.authEmailDescription,
-                    validator: (value) => FormValidation.validate(
-                      fieldValidators: [
-                        FieldValidators.required(),
-                        FieldValidators.email(),
-                      ],
-                      fieldValue: value,
-                    ),
-                  ),
-                  FormInputWidget(
-                    key: const ValueKey<String>('AuthPasswordField'),
-                    labelText: TextContants.authPasswordLabel,
-                    helperText: TextContants.authPasswordDescription,
-                    isPassword: true,
-                    validator: (value) => FormValidation.validate(
-                      fieldValidators: [
-                        FieldValidators.password(),
-                      ],
-                      fieldValue: value,
-                    ),
-                  ),
-                  RaisedButton(
-                    key: const ValueKey<String>('AuthActionButton'),
-                    onPressed: () {
-                      if (!formKey.currentState.validate()) {}
+        /// TODO: Check if there's a better way to manage an error state.
+        viewModel.maybeWhen(
+          error: (error, stackTrace) {
+            print('Error $error');
+            print('Stacktrace $stackTrace');
 
-                      print(
-                        'Form Validity ${formKey.currentState.validate()}',
-                      );
-                      context.read(authViewModelProvider).authenticate(
-                            email: emailController.value.text,
-                            password: passwordController.value.text,
-                            authType: authType,
-                          );
-                    },
-                    child: Text(formTitle),
-                  ),
-                  const SizedBox(
-                    height: 25,
-                  ),
-                  AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 500),
-                    child: RaisedButton(
-                      key: ValueKey<String>(buttonText),
-                      onPressed: () {
-                        if (authType == AuthType.signIn) {
-                          context.read(authTypeProvider).state =
-                              AuthType.signUp;
-                          return;
-                        }
-                        context.read(authTypeProvider).state = AuthType.signIn;
-                      },
-                      child: Text(
-                        '$buttonText instead',
-                        key: const ValueKey<String>('AuthTypeText'),
-                        textAlign: TextAlign.center,
+            SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+              Scaffold.of(context).removeCurrentSnackBar();
+              Scaffold.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Auth form Error ${timeStamp.inSeconds}'),
+                ),
+              );
+            });
+          },
+          orElse: () => null,
+        );
+
+        if (isLoading) {
+          return const LoadingStateWidget();
+        }
+
+        return Scaffold(
+          key: widget.key,
+          body: SingleChildScrollView(
+            padding: const EdgeInsets.all(10),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                /// TODO: Replace this with the proper logo.
+                const FlutterLogo(
+                  size: 150,
+                ),
+                Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      Text(_title),
+                      FormInputWidget(
+                        key: const ValueKey<String>('AuthFullNameField'),
+                        labelText: TextContants.authFullnameLabel,
+                        helperText: TextContants.authFullnameDescription,
+                        controller: _fullNameController,
+                        showInput: _authType != AuthType.signIn,
+                        validator: (value) => FormValidation.validate(
+                          fieldValidators: [
+                            FieldValidators.required(),
+                          ],
+                          fieldValue: value,
+                        ),
                       ),
-                    ),
+                      FormInputWidget(
+                        key: const ValueKey<String>('AuthEmailField'),
+                        labelText: TextContants.authEmailLabel,
+                        helperText: TextContants.authEmailDescription,
+                        controller: _emailController,
+                        validator: (value) => FormValidation.validate(
+                          fieldValidators: [
+                            FieldValidators.required(),
+                            FieldValidators.email(),
+                          ],
+                          fieldValue: value,
+                        ),
+                      ),
+                      FormInputWidget(
+                        key: const ValueKey<String>('AuthPasswordField'),
+                        labelText: TextContants.authPasswordLabel,
+                        helperText: TextContants.authPasswordDescription,
+                        controller: _passwordController,
+                        isPassword: true,
+                        validator: (value) => FormValidation.validate(
+                          fieldValidators: [
+                            FieldValidators.password(),
+                          ],
+                          fieldValue: value,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 40,
+                      ),
+                      RaisedButton(
+                        key: const ValueKey<String>('AuthActionButton'),
+                        onPressed: () {
+                          if (_formKey.currentState.validate()) {
+                            context.read(authViewModelProvider).authenticate(
+                                  email: _emailController.value.text,
+                                  password: _passwordController.value.text,
+                                  authType: _authType,
+                                );
+                          }
+                        },
+                        child: Text(_title),
+                      ),
+                      AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 500),
+                        child: RaisedButton(
+                          key: ValueKey<String>(_btnText),
+                          onPressed: () {
+                            if (_authType == AuthType.signIn) {
+                              setState(() {
+                                _authType = AuthType.signUp;
+                              });
+                            } else {
+                              setState(() {
+                                _authType = AuthType.signIn;
+                              });
+                            }
+                          },
+                          child: Text(
+                            '$_btnText instead',
+                            key: const ValueKey<String>('AuthTypeText'),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+                      if (kDebugMode)
+                        RaisedButton(
+                          key: const ValueKey<String>('AuthFillDebugData'),
+                          onPressed: () {
+                            setState(() {
+                              _fullNameController.text = 'John Doe';
+                              _emailController.text = 'john@doe.com';
+                              _passwordController.text = '!Mn34mk983sX';
+                            });
+                          },
+                          child: const Text('Fill Debug Data'),
+                        ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 }
