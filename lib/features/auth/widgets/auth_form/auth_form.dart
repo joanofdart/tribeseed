@@ -86,8 +86,35 @@ class _AuthFormWidgetState extends State<AuthFormWidget> {
 
         return Scaffold(
           key: widget.key,
+          bottomNavigationBar: kDebugMode
+              ? Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: RaisedButton(
+                    key: const ValueKey<String>('AuthFillDebugData'),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    padding: const EdgeInsets.all(20),
+                    color: Colors.red[400],
+                    onPressed: () {
+                      /// TODO: Move this outside.
+                      setState(() {
+                        _fullNameController.text = 'John Doe';
+                        _emailController.text = 'john@doe.com';
+                        _passwordController.text = '!Mn34mk983sX';
+                      });
+                    },
+                    child: const Text(
+                      'Fill Debug Data',
+                      style: TextStyle(
+                        color: Colors.white70,
+                      ),
+                    ),
+                  ),
+                )
+              : null,
           body: SingleChildScrollView(
-            padding: const EdgeInsets.all(10),
+            padding: const EdgeInsets.all(20),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -95,110 +122,102 @@ class _AuthFormWidgetState extends State<AuthFormWidget> {
                 const FlutterLogo(
                   size: 150,
                 ),
-                Form(
-                  key: _formKey,
-                  child: Column(
-                    children: [
-                      Text(_title),
-                      FormInputWidget(
-                        key: const ValueKey<String>('AuthFullNameField'),
-                        labelText: TextContants.authFullnameLabel,
-                        helperText: TextContants.authFullnameDescription,
-                        controller: _fullNameController,
-                        showInput: _authType != AuthType.signIn,
-                        validator: (value) => FormValidation.validate(
-                          fieldValidators: [
-                            FieldValidators.required(),
-                          ],
-                          fieldValue: value,
-                        ),
-                      ),
-                      FormInputWidget(
-                        key: const ValueKey<String>('AuthEmailField'),
-                        labelText: TextContants.authEmailLabel,
-                        helperText: TextContants.authEmailDescription,
-                        controller: _emailController,
-                        validator: (value) => FormValidation.validate(
-                          fieldValidators: [
-                            FieldValidators.required(),
-                            FieldValidators.email(),
-                          ],
-                          fieldValue: value,
-                        ),
-                      ),
-                      FormInputWidget(
-                        key: const ValueKey<String>('AuthPasswordField'),
-                        labelText: TextContants.authPasswordLabel,
-                        helperText: TextContants.authPasswordDescription,
-                        controller: _passwordController,
-                        isPassword: true,
-                        validator: (value) => FormValidation.validate(
-                          fieldValidators: [
-                            FieldValidators.password(),
-                          ],
-                          fieldValue: value,
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 40,
-                      ),
-                      RaisedButton(
-                        key: const ValueKey<String>('AuthActionButton'),
-                        onPressed: () {
-                          if (_formKey.currentState.validate()) {
-                            context.read(authViewModelProvider).authenticate(
-                                  displayName: _fullNameController.value.text,
-                                  email: _emailController.value.text,
-                                  password: _passwordController.value.text,
-                                  authType: _authType,
-                                );
-                          }
-                        },
-                        child: Text(_btnText),
-                      ),
-                      RaisedButton(
-                        key: ValueKey<String>(_btnText),
-                        onPressed: () {
-                          if (_authType == AuthType.signIn) {
-                            setState(() {
-                              _authType = AuthType.signUp;
-                              _title = TextContants.authSignUpTitle;
-                              _btnText = TextContants.authSignInTitle;
-                            });
-                          } else {
-                            setState(() {
-                              _authType = AuthType.signIn;
-                              _title = TextContants.authSignInTitle;
-                              _btnText = TextContants.authSignUpTitle;
-                            });
-                          }
-                        },
-                        child: Text(
-                          '$_btnText instead!',
-                          key: const ValueKey<String>('AuthTypeText'),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                      if (kDebugMode)
-                        RaisedButton(
-                          key: const ValueKey<String>('AuthFillDebugData'),
-                          onPressed: () {
-                            setState(() {
-                              _fullNameController.text = 'John Doe';
-                              _emailController.text = 'john@doe.com';
-                              _passwordController.text = '!Mn34mk983sX';
-                            });
-                          },
-                          child: const Text('Fill Debug Data'),
-                        ),
-                    ],
-                  ),
-                ),
+                _buildForm(context),
               ],
             ),
           ),
         );
       },
+    );
+  }
+
+  Form _buildForm(BuildContext context) {
+    return Form(
+      key: _formKey,
+      child: Column(
+        children: [
+          Text(_title),
+          FormInputWidget(
+            key: const ValueKey<String>('AuthFullNameField'),
+            labelText: TextContants.authFullnameLabel,
+            helperText: TextContants.authFullnameDescription,
+            controller: _fullNameController,
+            showInput: _authType != AuthType.signIn,
+            validator: (value) => FormValidation.validate(
+              fieldValidators: [
+                FieldValidators.required(),
+              ],
+              fieldValue: value,
+            ),
+          ),
+          FormInputWidget(
+            key: const ValueKey<String>('AuthEmailField'),
+            labelText: TextContants.authEmailLabel,
+            helperText: TextContants.authEmailDescription,
+            controller: _emailController,
+            validator: (value) => FormValidation.validate(
+              fieldValidators: [
+                FieldValidators.required(),
+                FieldValidators.email(),
+              ],
+              fieldValue: value,
+            ),
+          ),
+          FormInputWidget(
+            key: const ValueKey<String>('AuthPasswordField'),
+            labelText: TextContants.authPasswordLabel,
+            helperText: TextContants.authPasswordDescription,
+            controller: _passwordController,
+            isPassword: true,
+            validator: (value) => FormValidation.validate(
+              fieldValidators: [
+                FieldValidators.password(),
+              ],
+              fieldValue: value,
+            ),
+          ),
+          const SizedBox(
+            height: 40,
+          ),
+          RaisedButton(
+            key: const ValueKey<String>('AuthActionButton'),
+            onPressed: () {
+              if (_formKey.currentState.validate()) {
+                context.read(authViewModelProvider).authenticate(
+                      displayName: _fullNameController.value.text,
+                      email: _emailController.value.text,
+                      password: _passwordController.value.text,
+                      authType: _authType,
+                    );
+              }
+            },
+            child: Text(_btnText),
+          ),
+          RaisedButton(
+            key: ValueKey<String>(_btnText),
+            onPressed: () {
+              if (_authType == AuthType.signIn) {
+                setState(() {
+                  _authType = AuthType.signUp;
+                  _title = TextContants.authSignUpTitle;
+                  _btnText = TextContants.authSignInTitle;
+                });
+              } else {
+                setState(() {
+                  _authType = AuthType.signIn;
+                  _title = TextContants.authSignInTitle;
+                  _btnText = TextContants.authSignUpTitle;
+                });
+              }
+            },
+            child: Text(
+              '$_btnText instead!',
+              key: const ValueKey<String>('AuthTypeText'),
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
