@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class ErrorStateWidget extends StatelessWidget {
+class ErrorState extends StatelessWidget {
   final String errorMessage;
   final FlutterError flutterError;
 
-  const ErrorStateWidget({
+  const ErrorState({
     Key key,
     this.errorMessage,
     this.flutterError,

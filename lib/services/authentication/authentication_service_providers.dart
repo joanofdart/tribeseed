@@ -6,6 +6,8 @@ import 'package:tribeseed/repositories/user_repository/user_repository_providers
 import 'authentication_service.dart';
 import 'authentication_service_mock.dart';
 
+const kLoggedInState = false;
+
 final authenticationServiceProvider = Provider<AuthenticationService>(
   (ref) {
     final useServiceMocks = ref.watch(useServiceMocksProvider).state;
@@ -24,4 +26,11 @@ final authenticationServiceProvider = Provider<AuthenticationService>(
   },
 );
 
-final currentUserProvider = StateProvider<UserModel>((ref) => null);
+final currentUserProvider = StateProvider<UserModel>(
+  (ref) {
+    if (kLoggedInState) {
+      return UserModel.initial();
+    }
+    return null;
+  },
+);

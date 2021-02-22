@@ -1,4 +1,5 @@
 mixin RouteNames {
-  static String main = '/';
-  static String home = '/home';
+  static const String main = '/';
+  static const String auth = '/auth';
+  static const String home = '/home';
 }

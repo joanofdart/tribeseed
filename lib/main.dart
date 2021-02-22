@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tribeseed/app/auth_state.dart';
+import 'package:tribeseed/app/root_navigator.dart';
 import 'package:tribeseed/core/mixins/route_names.dart';
-import 'package:tribeseed/features/auth/auth_manager.dart';
-import 'package:tribeseed/features/home/home.dart';
 
 void main() {
-  runApp(App());
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(
+    App(),
+  );
 }
 
 class App extends StatelessWidget with RouteNames {
@@ -18,14 +21,11 @@ class App extends StatelessWidget with RouteNames {
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        routes: {
-          RouteNames.main: (context) => AuthManager(
-                authComplete: (context) {
-                  return const HomeWidget();
-                },
-              ),
-          RouteNames.home: (context) => const HomeWidget(),
-        },
+        home: SafeArea(
+          child: AuthState(
+            onLoggedIn: (context) => RootNavigator(),
+          ),
+        ),
       ),
     );
   }
