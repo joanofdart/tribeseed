@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 class SocialAuthButton extends StatelessWidget {
   final bool showLoading;
+  final double width;
   final String assetImagePath;
   final Color backgroundColor;
   final Color textColor;
@@ -17,7 +18,8 @@ class SocialAuthButton extends StatelessWidget {
   const SocialAuthButton({
     Key key,
     this.showLoading = false,
-    this.backgroundColor = Colors.white70,
+    this.width = double.infinity,
+    this.backgroundColor = Colors.white,
     this.textColor = Colors.blue,
     this.borderColor = Colors.blue,
     this.progressIndicatorColor = Colors.white70,
@@ -36,13 +38,15 @@ class SocialAuthButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: double.infinity,
+      width: width,
       child: OutlineButton(
         onPressed: onPressed,
         borderSide: BorderSide(
           color: borderColor,
           width: 0.6,
         ),
+        padding: const EdgeInsets.symmetric(vertical: 10),
+        color: backgroundColor,
         splashColor: textColor,
         textColor: textColor,
         child: AnimatedSwitcher(

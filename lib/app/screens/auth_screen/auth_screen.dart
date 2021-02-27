@@ -3,12 +3,12 @@ import 'dart:ui';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tribeseed/app/widgets/action_button.dart';
+import 'package:tribeseed/app/widgets/form_input.dart';
+import 'package:tribeseed/app/widgets/text_logo.dart';
 import 'package:tribeseed/core/enums/auth_type.dart';
 import 'package:tribeseed/core/validation/form_validation.dart';
-import 'package:tribeseed/core/widgets/action_button.dart';
-import 'package:tribeseed/core/widgets/form_input.dart';
 import 'package:tribeseed/services/authentication/authentication_service_providers.dart';
 
 import 'auth_screen_model.dart';
@@ -32,20 +32,22 @@ class AuthScreen extends HookWidget {
     final _fullNameController = useTextEditingController();
     final _emailController = useTextEditingController();
     final _passwordController = useTextEditingController();
+
     final _isSignIn = useState(true);
     final _isBusy = useState(false);
 
     return Scaffold(
       /// Set up loading state and error feedback
       ///
-      body: ProviderListener<AsyncValue>(
+      body: ProviderListener<AsyncValue<bool>>(
         provider: _authScreenModelProvider.state,
         onChange: (context, state) {
-          state.maybeWhen(
+          state.when(
             loading: () {
               _isBusy.value = true;
             },
             error: (error, stackTrace) {
+              _isBusy.value = false;
               Scaffold.of(context).showSnackBar(
                 SnackBar(
                   content: Text('Error ${error.toString()}'),
@@ -53,7 +55,6 @@ class AuthScreen extends HookWidget {
               );
             },
             data: (value) => _isBusy.value = false,
-            orElse: () => null,
           );
         },
 
@@ -67,13 +68,7 @@ class AuthScreen extends HookWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
-                    child: Text(
-                      'TribeSeed',
-                      style: GoogleFonts.poppins(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 15,
-                      ),
-                    ),
+                    child: TextLogo(),
                   ),
                   if (kDebugMode)
                     RaisedButton(

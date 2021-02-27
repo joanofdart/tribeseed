@@ -1,13 +1,12 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tribeseed/core/enums/auth_status.dart';
 import 'package:tribeseed/core/enums/auth_type.dart';
 import 'package:tribeseed/repositories/user_repository/model/user_model.dart';
 import 'package:tribeseed/repositories/user_repository/user_repository.dart';
-import 'package:uuid/uuid.dart';
+import 'package:tribeseed/services/authentication/authentication_service_providers.dart';
 
 import 'authentication_service.dart';
-import 'authentication_service_providers.dart';
 
 class AuthenticationServiceMock implements AuthenticationService {
   final UserRepository userRepository;
@@ -19,11 +18,6 @@ class AuthenticationServiceMock implements AuthenticationService {
   });
 
   @override
-  UserModel currentUser() {
-    return reader(currentUserProvider).state;
-  }
-
-  @override
   Future<void> authenticate({
     String displayName,
     @required String email,
@@ -31,19 +25,20 @@ class AuthenticationServiceMock implements AuthenticationService {
     @required AuthType authType,
     AuthStatus authStatus = AuthStatus.pendingVerification,
   }) async {
+    final _generatedUser = UserModel.generate(
+      emailAddress: email,
+      displayName: displayName,
+      authStatus: authStatus,
+    );
+
     switch (authType) {
       case AuthType.signUp:
 
         ///Authenticate user and retrieve data from DB
         ///
         try {
-          final authenticatedUser = _generateUser(
-            authStatus,
-            email: email,
-            displayName: displayName,
-          );
-          await userRepository.create(authenticatedUser);
-          reader(currentUserProvider).state = authenticatedUser;
+          await userRepository.create(_generatedUser);
+          reader(currentUserProvider).state = _generatedUser;
         } catch (_) {
           rethrow;
         }
@@ -54,12 +49,9 @@ class AuthenticationServiceMock implements AuthenticationService {
 
         ///Authenticate user
         ///
-        final authenticatedUser = _generateUser(
-          authStatus,
-          email: email,
-          displayName: displayName,
-        );
-        reader(currentUserProvider).state = authenticatedUser;
+        reader(currentUserProvider).state = _generatedUser;
+
+        /// TODO: Maybe add a last login => device => date ?
         break;
     }
   }
@@ -71,8 +63,8 @@ class AuthenticationServiceMock implements AuthenticationService {
 
   @override
   Future<void> validateEmail() async {
+    final user = reader(currentUserProvider).state;
     try {
-      final user = currentUser();
       final modifiedUser = user.copyWith(
         emailVerified: true,
         authStatus: AuthStatus.onboarding.name,
@@ -86,8 +78,8 @@ class AuthenticationServiceMock implements AuthenticationService {
 
   @override
   Future<void> invalidateEmail() async {
+    final user = reader(currentUserProvider).state;
     try {
-      final user = currentUser();
       final modifiedUser = user.copyWith(
         emailVerified: false,
         authStatus: AuthStatus.pendingVerification.name,
@@ -101,8 +93,8 @@ class AuthenticationServiceMock implements AuthenticationService {
 
   @override
   Future<void> onboardUser() async {
+    final user = reader(currentUserProvider).state;
     try {
-      final user = currentUser();
       final modifiedUser = user.copyWith(
         authStatus: AuthStatus.complete.name,
       );
@@ -111,24 +103,5 @@ class AuthenticationServiceMock implements AuthenticationService {
     } catch (_) {
       rethrow;
     }
-  }
-
-  UserModel _generateUser(
-    AuthStatus authStatus, {
-    String email,
-    String displayName,
-  }) {
-    final uuid = Uuid().v4();
-    final generatedUser = UserModel(
-      id: uuid,
-      aboutMe: 'Lorem ipsum dolore',
-      authStatus: authStatus.name,
-      displayName: displayName ?? 'Test User',
-      emailAddress: email ?? 'test@user.com',
-      emailVerified: authStatus.name == AuthStatus.onboarding.name ||
-          authStatus.name == AuthStatus.complete.name,
-      locale: 'en',
-    );
-    return generatedUser;
   }
 }
