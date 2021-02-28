@@ -19,8 +19,8 @@ class ActionButton extends StatelessWidget {
     this.onPressed,
     this.textSize = 15,
     this.buttonColor = Colors.blue,
-    this.textColor = Colors.white70,
-    this.progressIndicatorColor = Colors.white70,
+    this.textColor = Colors.white,
+    this.progressIndicatorColor = Colors.white,
     this.showLoading = false,
     @required this.buttonText,
     this.fontFeatures = const [
@@ -33,26 +33,13 @@ class ActionButton extends StatelessWidget {
     return RaisedButton(
       key: key,
       onPressed: showLoading ? null : onPressed,
-      padding: const EdgeInsets.symmetric(
-        vertical: 10,
-      ),
+      padding: const EdgeInsets.all(10),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(5),
       ),
       color: buttonColor,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            buttonText.toLowerCase(),
-            style: TextStyle(
-              color: textColor,
-              fontSize: textSize,
-              fontFeatures: fontFeatures,
-            ),
-          ),
-          if (showLoading)
-            Container(
+      child: showLoading
+          ? Container(
               width: 20,
               height: 20,
               margin: const EdgeInsets.only(left: 5),
@@ -60,8 +47,14 @@ class ActionButton extends StatelessWidget {
                 backgroundColor: progressIndicatorColor,
               ),
             )
-        ],
-      ),
+          : Text(
+              buttonText.toLowerCase(),
+              style: TextStyle(
+                color: textColor,
+                fontSize: textSize,
+                fontFeatures: fontFeatures,
+              ),
+            ),
     );
   }
 }

@@ -34,7 +34,7 @@ class UserModel {
     AuthStatus authStatus,
   })  : id = Uuid().v4(),
         displayName = displayName ?? 'Test User',
-        aboutMe = '',
+        aboutMe = 'about me initial value',
         photoUrl = '',
         locale = 'en',
         emailAddress = emailAddress ?? 'test@user.com',
@@ -48,8 +48,8 @@ class UserModel {
     String aboutMe,
     String photoUrl,
     String locale,
-    bool emailVerified,
     String authStatus,
+    bool emailVerified,
     int createdAt,
     int updatedAt,
   }) {

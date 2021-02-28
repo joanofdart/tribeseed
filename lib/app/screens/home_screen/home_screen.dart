@@ -3,7 +3,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tribeseed/app/app_providers.dart';
 import 'package:tribeseed/app/screens/home_screen/widgets/actions_popup_card.dart';
-import 'package:tribeseed/app/widgets/action_button.dart';
 import 'package:tribeseed/app/widgets/animated_background_avatar.dart';
 import 'package:tribeseed/app/widgets/hero_popup_card.dart';
 import 'package:tribeseed/app/widgets/text_logo.dart';
@@ -15,8 +14,7 @@ import 'home_screen_model.dart';
 
 final _homeScreenProvider = StateNotifierProvider<HomeScreenModel>(
   (ref) {
-    final authenticationService = ref.watch(authenticationServiceProvider);
-    return HomeScreenModel(authenticationService);
+    return HomeScreenModel();
   },
 );
 
@@ -101,20 +99,6 @@ class HomeScreen extends HookWidget {
               Text(_currentUser.emailVerified.toString()),
               Text(_currentUser.authStatus),
               Text(_currentUser.emailAddress),
-              if (!_currentUser.emailVerified)
-                ActionButton(
-                  buttonText: 'Validate Test',
-                  showLoading: _isBusy.value,
-                  onPressed: () =>
-                      context.read(_homeScreenProvider).validateEmail(),
-                )
-              else
-                ActionButton(
-                  buttonText: 'Invalidate Test',
-                  showLoading: _isBusy.value,
-                  onPressed: () =>
-                      context.read(_homeScreenProvider).invalidateEmail(),
-                ),
               RaisedButton(
                 onPressed: () => Navigator.of(context).pushNamed('/test'),
                 child: Text('Go to Tesaaat - ${_currentUser.displayName}'),

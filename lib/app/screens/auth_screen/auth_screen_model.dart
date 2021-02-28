@@ -36,7 +36,7 @@ class AuthScreenModel extends StateNotifier<AsyncValue<bool>> {
         password: password,
         authType: authType,
       );
-      state = const AsyncData(true);
+      state = const AsyncValue.data(true);
     } catch (error) {
       print('Error $error');
       state = AsyncValue.error('authenticate() Error');

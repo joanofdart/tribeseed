@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 
 class ActionsPopupCard extends StatelessWidget {
   final List<String> actions;

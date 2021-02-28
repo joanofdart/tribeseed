@@ -182,30 +182,36 @@ class AuthScreen extends HookWidget {
                     SizedBox(
                       height: 20,
                     ),
-                    ActionButton(
-                      key: const ValueKey<String>('ContinueButton'),
-                      buttonText: 'Continue',
-                      showLoading: _isBusy.value,
-                      onPressed: () {
-                        if (_formKey.currentState.validate()) {
-                          context.read(_authScreenModelProvider).authenticate(
-                                displayName: _fullNameController.value.text,
-                                email: _emailController.value.text,
-                                password: _passwordController.value.text,
-                                authType: _isSignIn.value
-                                    ? AuthType.signIn
-                                    : AuthType.signUp,
-                              );
-                        }
-                      },
+                    SizedBox(
+                      width: double.infinity,
+                      child: ActionButton(
+                        key: const ValueKey<String>('ContinueButton'),
+                        buttonText: 'Continue',
+                        showLoading: _isBusy.value,
+                        onPressed: () {
+                          if (_formKey.currentState.validate()) {
+                            context.read(_authScreenModelProvider).authenticate(
+                                  displayName: _fullNameController.value.text,
+                                  email: _emailController.value.text,
+                                  password: _passwordController.value.text,
+                                  authType: _isSignIn.value
+                                      ? AuthType.signIn
+                                      : AuthType.signUp,
+                                );
+                          }
+                        },
+                      ),
                     ),
                     OrDivider(),
-                    SocialAuthButton(
-                      assetImagePath: 'assets/branding/google.png',
-                      semanticLabel: 'Google Auth Button',
-                      buttonText: 'sign in with google',
-                      showLoading: _isBusy.value,
-                      onPressed: () {},
+                    SizedBox(
+                      width: double.infinity,
+                      child: SocialAuthButton(
+                        assetImagePath: 'assets/branding/google.png',
+                        semanticLabel: 'Google Auth Button',
+                        buttonText: 'sign in with google',
+                        showLoading: _isBusy.value,
+                        onPressed: () {},
+                      ),
                     ),
                   ],
                 ),
