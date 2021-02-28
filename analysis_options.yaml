@@ -16,3 +16,6 @@ linter:
   rules:
     prefer_single_quotes: true
     use_setters_to_change_properties: false
+    sort_pub_dependencies: false
+    prefer_const_constructors: false
+    avoid_print: false

@@ -1,12 +1,10 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tribeseed/core/enums/auth_type.dart';
-import 'package:tribeseed/features/auth/auth_status.dart';
-import 'package:tribeseed/repositories/user_repository/model/user_model.dart';
+import 'package:tribeseed/core/enums/auth_status.dart';
 import 'package:tribeseed/repositories/user_repository/user_repository.dart';
 
 abstract class AuthenticationService {
-  UserModel currentUser();
   Future<void> authenticate({
     @required String email,
     @required String password,
@@ -28,12 +26,6 @@ class AuthenticationServiceImpl implements AuthenticationService {
     @required this.userRepository,
     @required this.reader,
   });
-
-  @override
-  UserModel currentUser() {
-    // TODO: implement currentUser
-    throw UnimplementedError();
-  }
 
   @override
   Future<void> authenticate({

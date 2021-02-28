@@ -1,40 +1,45 @@
+import 'dart:math';
+
 import 'model/user_model.dart';
 import 'user_repository.dart';
 
+const errorTriggerPercentage = 0.5;
+
 class UserRepositoryMock implements UserRepository {
-  const UserRepositoryMock();
+  final Random random;
+
+  UserRepositoryMock() : random = Random();
 
   @override
-  Future<bool> create(UserModel userModel) async {
-    try {
-      await Future.delayed(
-        const Duration(seconds: 2),
-        () => userModel,
-      );
-      return true;
-    } catch (_) {
-      print('Error while creating user $_');
-      return false;
+  Future<void> create(UserModel userModel) async {
+    await _waitForRandomTime();
+    if (random.nextDouble() < errorTriggerPercentage) {
+      throw 'User creation failed';
     }
   }
 
   @override
-  Future<bool> update(UserModel userModel) async {
-    try {
-      await Future.delayed(
-        const Duration(seconds: 2),
-        () => userModel,
-      );
-      return true;
-    } catch (_) {
-      print('Error while updating user $_');
-      return false;
+  Future<void> update(UserModel userModel) async {
+    await _waitForRandomTime();
+    if (random.nextDouble() < errorTriggerPercentage) {
+      throw 'User update failed';
     }
   }
 
   @override
-  Future<bool> disable(String userId) {
-    // TODO: implement disable
-    throw UnimplementedError();
+  Future<void> disable(String userId) async {
+    await _waitForRandomTime();
+    if (random.nextDouble() < errorTriggerPercentage) {
+      throw 'User disabling failed';
+    }
+  }
+
+  Future<void> _waitForRandomTime() async {
+    await Future.delayed(
+      Duration(
+        seconds: random.nextInt(3),
+      ),
+      () {},
+    );
   }
 }
