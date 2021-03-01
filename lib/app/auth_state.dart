@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tribeseed/app/screens/auth_screen/auth_screen.dart';
-import 'package:tribeseed/services/authentication/authentication_service_providers.dart';
+import 'package:tribeseed/main_providers.dart';
 
 class AuthState extends HookWidget {
   final WidgetBuilder onLoggedIn;

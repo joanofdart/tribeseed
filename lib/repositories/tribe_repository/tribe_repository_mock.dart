@@ -1,11 +1,11 @@
 import 'dart:math';
 
-import 'package:tribeseed/repositories/tribe_repository/tribe_repository.dart';
 import 'package:tribeseed/repositories/utils.dart';
 
 import 'model/tribe_model.dart';
+import 'tribe_repository_interface.dart';
 
-class TribeRepositoryMock implements TribeRepository {
+class TribeRepositoryMock implements ITribeRepository {
   final Random random;
 
   TribeRepositoryMock() : random = Random();

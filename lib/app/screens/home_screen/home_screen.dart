@@ -7,6 +7,7 @@ import 'package:tribeseed/app/widgets/animated_background_avatar.dart';
 import 'package:tribeseed/app/widgets/hero_popup_card.dart';
 import 'package:tribeseed/app/widgets/text_logo.dart';
 import 'package:tribeseed/core/enums/nav_routes.dart';
+import 'package:tribeseed/main_providers.dart';
 import 'package:tribeseed/services/authentication/authentication_service_providers.dart';
 import 'package:tribeseed/services/navigation/navigation_service_providers.dart';
 

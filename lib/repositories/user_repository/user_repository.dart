@@ -1,29 +1,24 @@
 import 'model/user_model.dart';
+import 'user_repository_interface.dart';
 
-abstract class UserRepository {
-  Future<void> create(UserModel userModel);
-  Future<void> update(UserModel userModel);
-  Future<void> disable(String userId);
-}
-
-class UserRepositoryImpl implements UserRepository {
+class UserRepositoryImpl implements IUserRepository {
   const UserRepositoryImpl();
 
   @override
-  Future<void> create(UserModel userModel) {
+  Future<bool> create(UserModel userModel) {
     // TODO: implement create
     throw UnimplementedError();
   }
 
   @override
-  Future<void> disable(String userId) {
-    // TODO: implement disable
+  Future<bool> update(UserModel userModel) {
+    // TODO: implement update
     throw UnimplementedError();
   }
 
   @override
-  Future<void> update(UserModel userModel) {
-    // TODO: implement update
+  Future<bool> disable(String userId) {
+    // TODO: implement disable
     throw UnimplementedError();
   }
 }

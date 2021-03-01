@@ -1,10 +1,10 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tribeseed/services/authentication/authentication_service_interface.dart';
-import 'package:tribeseed/services/user/user_service_interface.dart';
+import 'package:tribeseed/services/authentication/authentication_service.dart';
+import 'package:tribeseed/services/user/user_service.dart';
 
 class ProfileScreenModel extends StateNotifier<AsyncValue<bool>> {
-  final IUserService userService;
-  final IAuthenticationService authenticationService;
+  final UserService userService;
+  final AuthenticationService authenticationService;
 
   ProfileScreenModel({
     this.userService,

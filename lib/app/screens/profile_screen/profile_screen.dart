@@ -3,6 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tribeseed/app/widgets/action_button.dart';
 import 'package:tribeseed/app/widgets/form_input.dart';
+import 'package:tribeseed/main_providers.dart';
 import 'package:tribeseed/services/authentication/authentication_service_providers.dart';
 import 'package:tribeseed/services/user/user_service_providers.dart';
 
@@ -92,8 +93,8 @@ class ProfileScreen extends HookWidget {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(50),
                     color: _currentUser.emailVerified
-                        ? Colors.green[200]
-                        : Colors.red[200],
+                        ? Colors.green[400]
+                        : Colors.red[400],
                   ),
                   padding: const EdgeInsets.all(10),
                   child: Row(
@@ -106,9 +107,12 @@ class ProfileScreen extends HookWidget {
                         child: _emailVerified
                             ? Icon(
                                 Icons.verified,
-                                color: Colors.black45,
+                                color: Colors.white70,
                               )
-                            : Icon(Icons.error),
+                            : Icon(
+                                Icons.error,
+                                color: Colors.white70,
+                              ),
                       ),
                       SizedBox(
                         width: 10,
@@ -117,6 +121,7 @@ class ProfileScreen extends HookWidget {
                         _emailVerified
                             ? 'Email verified'
                             : 'Pending email verification',
+                        style: TextStyle(color: Colors.white70),
                       ),
                     ],
                   ),

@@ -3,9 +3,9 @@ import 'dart:math';
 import 'package:tribeseed/repositories/utils.dart';
 
 import 'model/user_model.dart';
-import 'user_repository.dart';
+import 'user_repository_interface.dart';
 
-class UserRepositoryMock implements UserRepository {
+class UserRepositoryMock implements IUserRepository {
   final Random random;
 
   UserRepositoryMock() : random = Random();
@@ -27,7 +27,7 @@ class UserRepositoryMock implements UserRepository {
   }
 
   @override
-  Future<void> disable(String userId) async {
+  Future<void> disable(String id) async {
     await waitForRandomTime();
     if (random.nextDouble() < errorTriggerPercentage) {
       throw 'User disabling failed';

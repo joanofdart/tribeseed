@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tribeseed/core/enums/auth_type.dart';
 import 'package:tribeseed/services/authentication/authentication_service.dart';
-import 'package:tribeseed/services/authentication/authentication_service_interface.dart';
 
 class AuthScreenModel extends StateNotifier<AsyncValue<bool>> {
-  final IAuthenticationService authenticationService;
+  final AuthenticationService authenticationService;
 
   AuthScreenModel(
     this.authenticationService,

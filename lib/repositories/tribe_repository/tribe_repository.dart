@@ -1,12 +1,7 @@
-import 'package:tribeseed/repositories/tribe_repository/model/tribe_model.dart';
+import 'model/tribe_model.dart';
+import 'tribe_repository_interface.dart';
 
-abstract class TribeRepository {
-  Future<void> create(TribeModel tribeModel);
-  Future<void> update(TribeModel tribeModel);
-  Future<void> delete(String id);
-}
-
-class TribeRepositoryImpl implements TribeRepository {
+class TribeRepositoryImpl implements ITribeRepository {
   @override
   Future<void> create(TribeModel tribeModel) {
     // TODO: implement create
