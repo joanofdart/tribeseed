@@ -3,13 +3,14 @@ import 'package:recase/recase.dart';
 import 'package:tribeseed/main_providers.dart';
 import 'package:tribeseed/repositories/user_repository/model/user_model.dart';
 import 'package:tribeseed/repositories/user_repository/user_repository_providers.dart';
+import 'package:tribeseed/services/authentication/authentication_service_interface.dart';
 
 import 'authentication_service.dart';
 import 'authentication_service_mock.dart';
 
 const kLoggedInState = false;
 
-final authenticationServiceProvider = Provider<AuthenticationService>(
+final authenticationServiceProvider = Provider<IAuthenticationService>(
   (ref) {
     final useServiceMocks = ref.watch(useServiceMocksProvider).state;
     final userRepository = ref.watch(userRepositoryProvider);
@@ -20,7 +21,7 @@ final authenticationServiceProvider = Provider<AuthenticationService>(
         reader: ref.read,
       );
     }
-    return AuthenticationServiceImpl(
+    return AuthenticationService(
       userRepository: userRepository,
       reader: ref.read,
     );

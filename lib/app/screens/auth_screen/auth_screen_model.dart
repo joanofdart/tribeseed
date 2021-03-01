@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tribeseed/core/enums/auth_type.dart';
 import 'package:tribeseed/services/authentication/authentication_service.dart';
+import 'package:tribeseed/services/authentication/authentication_service_interface.dart';
 
 class AuthScreenModel extends StateNotifier<AsyncValue<bool>> {
-  final AuthenticationService authenticationService;
+  final IAuthenticationService authenticationService;
 
   AuthScreenModel(
     this.authenticationService,
@@ -31,10 +32,10 @@ class AuthScreenModel extends StateNotifier<AsyncValue<bool>> {
         ),
       );
       await authenticationService.authenticate(
+        email,
+        password,
+        authType,
         displayName: displayName,
-        email: email,
-        password: password,
-        authType: authType,
       );
       state = const AsyncValue.data(true);
     } catch (error) {

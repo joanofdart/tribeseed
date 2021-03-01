@@ -6,9 +6,9 @@ import 'package:tribeseed/repositories/user_repository/model/user_model.dart';
 import 'package:tribeseed/repositories/user_repository/user_repository.dart';
 import 'package:tribeseed/services/authentication/authentication_service_providers.dart';
 
-import 'authentication_service.dart';
+import 'authentication_service_interface.dart';
 
-class AuthenticationServiceMock implements AuthenticationService {
+class AuthenticationServiceMock implements IAuthenticationService {
   final UserRepository userRepository;
   final Reader reader;
 
@@ -18,11 +18,11 @@ class AuthenticationServiceMock implements AuthenticationService {
   });
 
   @override
-  Future<void> authenticate({
+  Future<void> authenticate(
+    String email,
+    String password,
+    AuthType authType, {
     String displayName,
-    @required String email,
-    @required String password,
-    @required AuthType authType,
     AuthStatus authStatus = AuthStatus.pendingVerification,
   }) async {
     final _generatedUser = UserModel.generate(

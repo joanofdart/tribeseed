@@ -4,35 +4,23 @@ import 'package:tribeseed/core/enums/auth_type.dart';
 import 'package:tribeseed/core/enums/auth_status.dart';
 import 'package:tribeseed/repositories/user_repository/user_repository.dart';
 
-abstract class AuthenticationService {
-  Future<void> authenticate({
-    @required String email,
-    @required String password,
-    @required AuthType authType,
-    String displayName,
-    AuthStatus authStatus,
-  });
-  Future<void> validateEmail();
-  Future<void> invalidateEmail();
-  Future<void> onboardUser();
-  void signOut();
-}
+import 'authentication_service_interface.dart';
 
-class AuthenticationServiceImpl implements AuthenticationService {
+class AuthenticationService implements IAuthenticationService {
   final UserRepository userRepository;
   final Reader reader;
 
-  AuthenticationServiceImpl({
+  AuthenticationService({
     @required this.userRepository,
     @required this.reader,
   });
 
   @override
-  Future<void> authenticate({
+  Future<void> authenticate(
     String email,
     String password,
+    AuthType authType, {
     String displayName,
-    AuthType authType,
     AuthStatus authStatus,
   }) {
     // TODO: implement authenticateUser

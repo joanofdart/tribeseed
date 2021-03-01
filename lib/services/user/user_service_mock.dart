@@ -2,9 +2,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tribeseed/repositories/user_repository/user_repository.dart';
 import 'package:tribeseed/services/authentication/authentication_service_providers.dart';
 
-import 'user_service.dart';
+import 'user_service_interface.dart';
 
-class UserServiceMock implements UserService {
+class UserServiceMock implements IUserService {
   final UserRepository userRepository;
   final Reader reader;
 

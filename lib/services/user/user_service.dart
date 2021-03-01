@@ -1,17 +1,13 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tribeseed/repositories/user_repository/user_repository.dart';
 
-abstract class UserService {
-  Future<void> update({
-    String aboutMe,
-  });
-}
+import 'user_service_interface.dart';
 
-class UserServiceImpl implements UserService {
+class UserService implements IUserService {
   final UserRepository userRepository;
   final Reader reader;
 
-  UserServiceImpl({
+  UserService({
     this.userRepository,
     this.reader,
   });
