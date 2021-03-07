@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tribeseed/app/widgets/action_button.dart';
+import 'package:tribeseed/app/widgets/auth_button.dart';
 import 'package:tribeseed/app/widgets/form_input.dart';
 import 'package:tribeseed/main_providers.dart';
 import 'package:tribeseed/services/authentication/authentication_service_providers.dart';
@@ -149,20 +149,20 @@ class ProfileScreen extends HookWidget {
                   height: 10,
                 ),
                 if (!_emailVerified)
-                  ActionButton(
+                  AuthButton(
                     buttonText: 'Validate Test',
                     showLoading: _isBusy.value,
                     onPressed: () =>
                         context.read(_profileScreenProvider).validateEmail(),
                   )
                 else
-                  ActionButton(
+                  AuthButton(
                     buttonText: 'Invalidate Test',
                     showLoading: _isBusy.value,
                     onPressed: () =>
                         context.read(_profileScreenProvider).invalidateEmail(),
                   ),
-                ActionButton(
+                AuthButton(
                   buttonText: 'Update profile',
                   showLoading: _isBusy.value,
                   onPressed: () async {

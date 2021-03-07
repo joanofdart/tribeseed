@@ -1,4 +1,5 @@
-import 'model/user_model.dart';
+import 'package:tribeseed/core/models/user_model.dart';
+
 import 'user_repository_interface.dart';
 
 class UserRepositoryImpl implements IUserRepository {

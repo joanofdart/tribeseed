@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 class NavigationService {
   final Map<String, GlobalKey<NavigatorState>> keys = {};
 
-  GlobalKey<NavigatorState> get root => getState('root');
+  GlobalKey<NavigatorState> get rootKey => getState('root');
 
-  NavigatorState get rootState => root.currentState;
+  NavigatorState get rootState => rootKey.currentState;
 
   GlobalKey<NavigatorState> getState(
     String navigatorName,

@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
-class ActionButton extends StatelessWidget {
+class AuthButton extends StatelessWidget {
   final bool showLoading;
   final String buttonText;
   final double textSize;
@@ -14,10 +14,10 @@ class ActionButton extends StatelessWidget {
 
   /// TODO: Improve this actionButton to be more reusable.
 
-  const ActionButton({
+  const AuthButton({
     Key key,
     this.onPressed,
-    this.textSize = 15,
+    this.textSize = 20,
     this.buttonColor = Colors.blue,
     this.textColor = Colors.white,
     this.progressIndicatorColor = Colors.white,
@@ -44,7 +44,9 @@ class ActionButton extends StatelessWidget {
               height: 20,
               margin: const EdgeInsets.only(left: 5),
               child: CircularProgressIndicator(
-                backgroundColor: progressIndicatorColor,
+                valueColor: AlwaysStoppedAnimation<Color>(
+                  progressIndicatorColor,
+                ),
               ),
             )
           : Text(

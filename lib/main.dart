@@ -28,7 +28,7 @@ class InitApp extends HookWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
         fontFamily: GoogleFonts.roboto().fontFamily,
       ),
-      navigatorKey: _navigationService.root,
+      navigatorKey: _navigationService.rootKey,
       home: SafeArea(
         child: AuthState(
           onLoggedIn: (context) => App(),

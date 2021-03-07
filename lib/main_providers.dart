@@ -1,6 +1,6 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import 'repositories/user_repository/model/user_model.dart';
+import 'core/models/user_model.dart';
 
 const kLoggedInState = false;
 

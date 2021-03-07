@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tribeseed/app/widgets/action_button.dart';
+import 'package:tribeseed/app/widgets/auth_button.dart';
 import 'package:tribeseed/app/widgets/form_input.dart';
 import 'package:tribeseed/app/widgets/text_logo.dart';
 import 'package:tribeseed/core/enums/auth_type.dart';
@@ -90,6 +90,9 @@ class AuthScreen extends HookWidget {
                         ),
                       ),
                     ),
+                  SizedBox(
+                    width: 10,
+                  ),
                   FlatButton(
                     onPressed: () {
                       _isSignIn.value = !_isSignIn.value;
@@ -99,15 +102,15 @@ class AuthScreen extends HookWidget {
                         10,
                       ),
                     ),
+                    color: Colors.grey[900],
                     splashColor: Colors.blue,
                     textColor: Colors.blue,
                     child: Text(
                       _isSignIn.value ? 'sign up' : 'sign in',
                       style: TextStyle(
-                        color: Colors.blue,
-                        fontSize: 20,
+                        color: Colors.white,
+                        fontSize: 15,
                         fontWeight: FontWeight.w500,
-                        letterSpacing: 1.5,
                         fontFeatures: const [
                           FontFeature.enable('smcp'),
                         ],
@@ -184,7 +187,7 @@ class AuthScreen extends HookWidget {
                     ),
                     SizedBox(
                       width: double.infinity,
-                      child: ActionButton(
+                      child: AuthButton(
                         key: const ValueKey<String>('ContinueButton'),
                         buttonText: 'Continue',
                         showLoading: _isBusy.value,

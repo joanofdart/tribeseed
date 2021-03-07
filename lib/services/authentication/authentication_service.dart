@@ -3,7 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tribeseed/core/enums/auth_type.dart';
 import 'package:tribeseed/core/enums/auth_status.dart';
 import 'package:tribeseed/main_providers.dart';
-import 'package:tribeseed/repositories/user_repository/model/user_model.dart';
+import 'package:tribeseed/core/models/user_model.dart';
 import 'package:tribeseed/repositories/user_repository/user_repository_interface.dart';
 
 class AuthenticationService {

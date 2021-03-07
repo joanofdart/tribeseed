@@ -1,4 +1,4 @@
-import 'model/tribe_model.dart';
+import 'package:tribeseed/core/models/tribe_model.dart';
 
 abstract class ITribeRepository {
   Future<void> create(TribeModel tribeModel);

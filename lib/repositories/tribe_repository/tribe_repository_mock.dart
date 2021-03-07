@@ -1,8 +1,8 @@
 import 'dart:math';
 
+import 'package:tribeseed/core/models/tribe_model.dart';
 import 'package:tribeseed/repositories/utils.dart';
 
-import 'model/tribe_model.dart';
 import 'tribe_repository_interface.dart';
 
 class TribeRepositoryMock implements ITribeRepository {
